@@ -1,9 +1,16 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  server: {
+    port: 8000,
+    host: '0.0.0.0'
+  },
   head: {
     title: 'tx8-front-dashboard',
+    bodyAttrs: {
+      class: 'font-inter'
+    },
     htmlAttrs: {
-      lang: 'en'
+      lang: 'es'
     },
     meta: [
       { charset: 'utf-8' },
@@ -29,8 +36,27 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    // https://tailwindcss.nuxtjs.org/
+    '@nuxtjs/tailwindcss',
+    // https://google-fonts.nuxtjs.org/
+    '@nuxtjs/google-fonts'
   ],
+
+  tailwindcss: {
+    cssPath: '~/assets/scss/main.scss',
+    jit: true
+  },
+  googleFonts: {
+    families: {
+      Inter: {
+        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      }
+    },
+    display: 'swap',
+    download: true,
+    stylePath: 'scss/base/_fonts.scss'
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
