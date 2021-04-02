@@ -7,7 +7,7 @@ export default {
   head: {
     title: 'tx8-front-dashboard',
     bodyAttrs: {
-      class: 'font-inter'
+      class: 'font-inter bg-gray-50'
     },
     htmlAttrs: {
       lang: 'es'
@@ -61,13 +61,51 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // https://auth.nuxtjs.org/
+    '@nuxtjs/auth-next'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://tx8-api.test/api'
+  },
+
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: '/login',
+      home: '/'
+    },
+    strategies: {
+      local: {
+        token: {
+          property: 'access_token'
+        },
+        user: {
+          property: 'user'
+        },
+        endpoints: {
+          login: { url: '/auth/login', method: 'post' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/me', method: 'get' }
+        }
+      }
+    }
+  },
+
+  router: {
+    middleware: ['auth']
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL
+    }
   }
 }

@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
@@ -63,7 +65,7 @@ module.exports = {
         800: '#991b1b',
         900: '#7f1d1d'
       },
-      gray: {
+      darkgray: {
         100: '#d9d9d9',
         200: '#b3b3b3',
         300: '#8e8e8e',
@@ -73,7 +75,8 @@ module.exports = {
         700: '#282828',
         800: '#1a1a1a',
         900: '#0d0d0d'
-      }
+      },
+      gray: colors.gray
     },
     fontFamily: {
       inter: ['"Inter"']
@@ -82,5 +85,7 @@ module.exports = {
   variants: {
     extend: {}
   },
-  plugins: []
+  plugins: [
+    require('@tailwindcss/forms')
+  ]
 }
