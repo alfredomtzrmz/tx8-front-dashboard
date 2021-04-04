@@ -31,7 +31,9 @@ export default {
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  components: [
+    { path: '~/components', pathPrefix: false }
+  ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -68,7 +70,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://tx8-api.test/api'
+    baseURL: 'http://jwt-api.test/api'
   },
 
   auth: {
@@ -79,17 +81,21 @@ export default {
       home: '/'
     },
     strategies: {
-      local: {
-        token: {
-          property: 'access_token'
-        },
-        user: {
-          property: 'user'
-        },
+      laravelJWT: {
+        provider: 'laravelJWT',
+        url: 'http://jwt-api.test/api',
         endpoints: {
           login: { url: '/auth/login', method: 'post' },
           logout: { url: '/auth/logout', method: 'post' },
-          user: { url: '/me', method: 'get' }
+          user: { url: '/auth/me', method: 'get' },
+          refresh: { url: '/auth/refresh', method: 'post' }
+        },
+        token: {
+          property: 'access_token',
+          maxAge: 60 * 60
+        },
+        refreshToken: {
+          maxAge: 20160 * 60
         }
       }
     }

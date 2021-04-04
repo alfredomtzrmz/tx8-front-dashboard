@@ -67,20 +67,21 @@
 <script>
 export default {
   name: 'Login',
-  auth: 'guest',
   layout: 'auth',
+  middleware: 'auth',
+  auth: 'guest',
   data () {
     return {
       login: {
-        email: '',
-        password: ''
+        email: 'isidro.ram@gmail.com',
+        password: 'password'
       }
     }
   },
   methods: {
     async userLogin () {
       try {
-        const response = await this.$auth.loginWith('local', { data: this.login })
+        const response = await this.$auth.loginWith('laravelJWT', { data: this.login })
         console.log(response.data)
       } catch (err) {
         console.log(err)
