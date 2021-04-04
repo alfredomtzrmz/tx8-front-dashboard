@@ -53,14 +53,14 @@
                     </div>
                     <div class="flex flex-col flex-grow mt-5">
                       <nav class="flex-1 px-2 space-y-1 bg-white" aria-label="Sidebar">
-                        <nuxt-link to="#" class="flex items-center w-full py-2 pl-2 text-sm font-medium bg-opacity-75 rounded-md bg-primary-100 text-primary-600 group focus:outline-none focus:ring-2 focus:ring-primary-200">
+                        <nuxt-link to="#" class="sidebar-item sidebar-item--active group">
                           <svg class="w-6 h-6 mr-3 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                           </svg>
                           Dashboard
                         </nuxt-link>
                         <div class="space-y-1">
-                          <button type="button" class="flex items-center w-full py-2 pl-2 pr-1 text-sm font-medium text-gray-600 bg-white rounded-md hover:bg-gray-50 hover:text-gray-900 group focus:outline-none focus:ring-2 focus:ring-primary-300" aria-controls="sub-menu-1" aria-expanded="false" @click="isUsersOpen = !isUsersOpen">
+                          <button type="button" class="sidebar-item sidebar-item--w-icon group" aria-controls="sub-menu-1" aria-expanded="false" @click="isUsersOpen = !isUsersOpen">
                             <svg class="w-6 h-6 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
@@ -70,25 +70,25 @@
                             </svg>
                           </button>
                           <div v-if="isUsersOpen" class="space-y-1">
-                            <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                            <nuxt-link to="#" class="sidebar-subitem group">
                               Resumen
                             </nuxt-link>
 
-                            <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                            <nuxt-link to="#" class="sidebar-subitem group">
                               Administradores
                             </nuxt-link>
 
-                            <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                            <nuxt-link to="#" class="sidebar-subitem group">
                               Repartidores
                             </nuxt-link>
 
-                            <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                            <nuxt-link to="#" class="sidebar-subitem group">
                               Clientes
                             </nuxt-link>
                           </div>
                         </div>
                         <div class="space-y-1">
-                          <button type="button" class="flex items-center w-full py-2 pl-2 pr-1 text-sm font-medium text-gray-600 bg-white rounded-md hover:bg-gray-50 hover:text-gray-900 group focus:outline-none focus:ring-2 focus:ring-primary-300" aria-controls="sub-menu-1" aria-expanded="false" @click="isInventoryOpen = !isInventoryOpen">
+                          <button type="button" class="sidebar-item sidebar-item--w-icon group" aria-controls="sub-menu-1" aria-expanded="false" @click="isInventoryOpen = !isInventoryOpen">
                             <svg class="w-6 h-6 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
@@ -98,19 +98,19 @@
                             </svg>
                           </button>
                           <div v-if="isInventoryOpen" class="space-y-1">
-                            <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                            <nuxt-link to="#" class="sidebar-subitem group">
                               Resumen
                             </nuxt-link>
 
-                            <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                            <nuxt-link to="#" class="sidebar-subitem group">
                               Categorias
                             </nuxt-link>
 
-                            <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                            <nuxt-link to="#" class="sidebar-subitem group">
                               Productos
                             </nuxt-link>
 
-                            <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                            <nuxt-link to="#" class="sidebar-subitem group">
                               Paquetes
                             </nuxt-link>
                           </div>
@@ -138,14 +138,14 @@
             </div>
             <div class="flex flex-col flex-grow mt-5">
               <nav class="flex-1 px-2 space-y-1 bg-white" aria-label="Sidebar">
-                <nuxt-link to="#" class="flex items-center w-full py-2 pl-2 text-sm font-medium bg-opacity-75 rounded-md bg-primary-100 text-primary-600 group focus:outline-none focus:ring-2 focus:ring-primary-200">
+                <nuxt-link to="#" class="sidebar-item sidebar-item--active group">
                   <svg class="w-6 h-6 mr-3 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
                   Dashboard
                 </nuxt-link>
                 <div class="space-y-1">
-                  <button type="button" class="flex items-center w-full py-2 pl-2 pr-1 text-sm font-medium text-gray-600 bg-white rounded-md hover:bg-gray-50 hover:text-gray-900 group focus:outline-none focus:ring-2 focus:ring-primary-300" aria-controls="sub-menu-1" aria-expanded="false" @click="isUsersOpen = !isUsersOpen">
+                  <button type="button" class="sidebar-item sidebar-item--w-icon group" aria-controls="sub-menu-1" aria-expanded="false" @click="isUsersOpen = !isUsersOpen">
                     <svg class="w-6 h-6 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
@@ -155,25 +155,25 @@
                     </svg>
                   </button>
                   <div v-if="isUsersOpen" class="space-y-1">
-                    <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                    <nuxt-link to="#" class="sidebar-subitem group">
                       Resumen
                     </nuxt-link>
 
-                    <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                    <nuxt-link to="#" class="sidebar-subitem group">
                       Administradores
                     </nuxt-link>
 
-                    <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                    <nuxt-link to="#" class="sidebar-subitem group">
                       Repartidores
                     </nuxt-link>
 
-                    <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                    <nuxt-link to="#" class="sidebar-subitem group">
                       Clientes
                     </nuxt-link>
                   </div>
                 </div>
                 <div class="space-y-1">
-                  <button type="button" class="flex items-center w-full py-2 pl-2 pr-1 text-sm font-medium text-gray-600 bg-white rounded-md hover:bg-gray-50 hover:text-gray-900 group focus:outline-none focus:ring-2 focus:ring-primary-300" aria-controls="sub-menu-1" aria-expanded="false" @click="isInventoryOpen = !isInventoryOpen">
+                  <button type="button" class="sidebar-item sidebar-item--w-icon group" aria-controls="sub-menu-1" aria-expanded="false" @click="isInventoryOpen = !isInventoryOpen">
                     <svg class="w-6 h-6 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
@@ -183,19 +183,19 @@
                     </svg>
                   </button>
                   <div v-if="isInventoryOpen" class="space-y-1">
-                    <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                    <nuxt-link to="#" class="sidebar-subitem group">
                       Resumen
                     </nuxt-link>
 
-                    <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                    <nuxt-link to="#" class="sidebar-subitem group">
                       Categorias
                     </nuxt-link>
 
-                    <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                    <nuxt-link to="#" class="sidebar-subitem group">
                       Productos
                     </nuxt-link>
 
-                    <nuxt-link to="#" class="flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900 group">
+                    <nuxt-link to="#" class="sidebar-subitem group">
                       Paquetes
                     </nuxt-link>
                   </div>

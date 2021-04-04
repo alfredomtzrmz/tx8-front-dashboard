@@ -1,0 +1,19 @@
+  .sidebar-item {
+    @apply flex items-center w-full text-sm font-medium bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-200 rounded-md py-2 pl-2;
+
+    &--w-icon {
+    @apply pr-1;
+    }
+
+    &--active {
+      @apply  bg-primary-100 text-primary-600 bg-opacity-75 hover:bg-primary-100 hover:text-primary-600 hover:bg-opacity-75 ;
+    }
+  }
+
+  .sidebar-subitem {
+    @apply flex items-center w-full py-2 pr-2 text-sm font-medium text-gray-600 border-transparent rounded-md pl-11 focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50 hover:text-gray-900;
+
+    &--active {
+    @apply bg-gray-50 text-gray-900;
+      }
+  }
