@@ -70,7 +70,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://jwt-api.test/api'
+    baseURL: 'http://tx8_api.test/api'
   },
 
   auth: {
@@ -83,7 +83,7 @@ export default {
     strategies: {
       laravelJWT: {
         provider: 'laravelJWT',
-        url: 'http://jwt-api.test/api',
+        url: 'http://tx8_api.test/api',
         endpoints: {
           login: { url: '/auth/login', method: 'post' },
           logout: { url: '/auth/logout', method: 'post' },
