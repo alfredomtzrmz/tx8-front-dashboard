@@ -7,7 +7,7 @@
     </div>
     <div class="h-full overflow-hidden text-center bg-white shadow sm:rounded-lg">
       <div class="flex flex-col px-4 py-5 sm:p-6">
-        <img src="/images/index-admin.svg" alt="Index Admin" class="h-auto mx-auto w-60">
+        <img src="@/static/images/index-admin.svg" alt="Index Admin" class="h-auto mx-auto w-60">
         <p class="text-xl">
           Gestionar los detalles del administrador
         </p>
