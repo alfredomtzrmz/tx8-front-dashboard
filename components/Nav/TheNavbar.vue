@@ -1,6 +1,6 @@
 <template>
   <div class="relative z-10 flex flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow lg:border-none">
-    <button class="px-4 text-gray-400 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-200 md:hidden">
+    <button class="px-4 text-gray-400 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-200 md:hidden" @click="setSidebarOpen">
       <span class="sr-only">Open sidebar</span>
       <!-- Heroicon name: outline/menu-alt-1 -->
       <svg
@@ -38,11 +38,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
-  name: 'TheNavbar'
+  name: 'TheNavbar',
+  methods: {
+    ...mapActions(['setSidebarOpen'])
+  }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
