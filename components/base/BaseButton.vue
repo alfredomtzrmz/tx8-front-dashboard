@@ -8,7 +8,7 @@
     @click="$emit('onClick')"
   >
     <template v-if="isLoading">
-      <svg class="w-6 h-6  stroke-current animate-spin" fill="none" viewBox="0 0 24 24">
+      <svg class="w-5 h-5  stroke-current animate-spin" fill="none" viewBox="0 0 24 24">
         <circle
           class="opacity-25"
           cx="12"
@@ -27,8 +27,8 @@
 </template>
 
 <script>
-const AVALIABLE_VARIANTS = ['primary', 'white']
-const AVALIABLE_SIZES = ['sm', 'md', 'icon']
+const AVAILABLE_VARIANTS = ['primary', 'white']
+const AVAILABLE_SIZES = ['sm', 'md', 'icon']
 export default {
   name: 'BaseButton',
   inheritAttrs: false,
@@ -38,7 +38,7 @@ export default {
       default: 'primary',
       required: false,
       validator (value) {
-        return AVALIABLE_VARIANTS.includes(value)
+        return AVAILABLE_VARIANTS.includes(value)
       }
     },
     size: {
@@ -46,7 +46,7 @@ export default {
       required: false,
       default: 'sm',
       validator (value) {
-        return AVALIABLE_SIZES.includes(value)
+        return AVAILABLE_SIZES.includes(value)
       }
     },
     to: {

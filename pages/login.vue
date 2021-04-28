@@ -54,7 +54,7 @@
           </div>
 
           <div>
-            <base-button type="submit" class="w-full">
+            <base-button :is-loading="isLoading" type="submit" class="w-full">
               Entrar
             </base-button>
           </div>
@@ -72,6 +72,7 @@ export default {
   auth: 'guest',
   data () {
     return {
+      isLoading: false,
       login: {
         email: 'isidro.ram@gmail.com',
         password: 'password'
@@ -81,10 +82,12 @@ export default {
   methods: {
     async userLogin () {
       try {
-        const response = await this.$auth.loginWith('laravelJWT', { data: this.login })
-        console.log(response.data)
+        this.isLoading = true
+        await this.$auth.loginWith('laravelJWT', { data: this.login })
       } catch (err) {
         console.log(err)
+      } finally {
+        this.isLoading = false
       }
     }
   }

@@ -27,7 +27,9 @@
       <div v-show="isDropdownOpen" class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Logout</a>
+        <button type="button" class="flex w-full focus:outline-none px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" @click="logout()">
+          Logout
+        </button>
       </div>
     </transition>
   </div>
@@ -49,6 +51,10 @@ export default {
   },
 
   methods: {
+    async logout () {
+      this.isDropdownOpen = false
+      await this.$auth.logout()
+    },
     toggle () {
       this.isDropdownOpen = !this.isDropdownOpen
     },
