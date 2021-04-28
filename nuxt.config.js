@@ -90,8 +90,12 @@ export default {
           user: { url: '/auth/me', method: 'get' },
           refresh: { url: '/auth/refresh', method: 'post' }
         },
+        user: {
+          property: 'data'
+          // autoFetch: true
+        },
         token: {
-          property: 'access_token',
+          property: 'data.access_token',
           maxAge: 60 * 60
         },
         refreshToken: {

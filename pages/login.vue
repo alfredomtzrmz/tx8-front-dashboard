@@ -54,9 +54,9 @@
           </div>
 
           <div>
-            <button type="submit" class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <base-button type="submit" class="w-full">
               Entrar
-            </button>
+            </base-button>
           </div>
         </form>
       </div>

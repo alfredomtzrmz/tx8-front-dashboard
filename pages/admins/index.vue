@@ -15,9 +15,12 @@
           Aquí es donde puede ver la información de los administradores y gestionar sus accesos.
         </p>
         <div class="mt-2 mb-6">
-          <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-white border border-transparent rounded-md shadow-sm bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+          <base-button>
             Agregar administrador
-          </button>
+          </base-button>
+          <base-button variant="white">
+            Importar
+          </base-button>
           <!-- <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Importar administradores
           </button> -->
