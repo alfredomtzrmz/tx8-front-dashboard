@@ -2,21 +2,21 @@
   <div class="flex flex-col w-full space-y-6">
     <div class="flex justify-between">
       <h1 class="text-xl font-medium">
-        Clientes
+        Repartidores
       </h1>
     </div>
     <div class="h-full overflow-hidden text-center bg-white shadow sm:rounded-lg">
       <div class="flex flex-col p-8">
-        <img src="@/static/images/index-customer-motion.svg" alt="Index Admin" class="h-auto mx-auto w-60">
+        <img src="@/static/images/index-dealer-motion.svg" alt="Index Admin" class="h-auto mx-auto w-60">
         <p class="text-xl">
-          Gestionar los detalles del cliente
+          Gestionar los detalles del repartidor
         </p>
         <p class="max-w-xs mx-auto my-4 text-sm text-gray-500">
-          Aquí es donde puede ver la información de los clientes y ver su historial de pedidos.
+          Aquí es donde puede ver la información de los repartidores y gestionar su información.
         </p>
         <div class="mt-2 mb-6">
-          <base-button to="/customers/create">
-            Agregar cliente
+          <base-button to="/dealers/create">
+            Agregar repartidor
           </base-button>
         </div>
       </div>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: 'Customers',
+  name: 'Dealers',
   layout: 'default',
   transition: 'tweakOpacity'
 }

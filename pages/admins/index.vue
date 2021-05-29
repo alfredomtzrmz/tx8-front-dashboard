@@ -6,10 +6,11 @@
       </h1>
     </div>
     <div class="h-full overflow-hidden text-center bg-white shadow sm:rounded-lg">
-      <div class="flex flex-col px-4 py-5 sm:p-6">
-        <img src="@/static/images/index-admin.svg" alt="Index Admin" class="h-auto mx-auto w-60">
+      <div class="flex flex-col p-8">
+        <img src="@/static/images/index-admin-motion.svg" alt="Index Admin" class="h-auto mx-auto w-60">
+
         <p class="text-xl">
-          Gestionar los detalles del administrador
+          Agregar y gestionar los administradores
         </p>
         <p class="max-w-xs mx-auto my-4 text-sm text-gray-500">
           Aquí es donde puede ver la información de los administradores y gestionar sus accesos.

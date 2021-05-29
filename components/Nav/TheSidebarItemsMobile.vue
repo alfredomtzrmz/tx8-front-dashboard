@@ -16,7 +16,7 @@
     <div class="space-y-1">
       <button
         type="button"
-        :class="{'sidebar-item--active' : $route.path.startsWith('/users') || $route.path.startsWith('/admins') || $route.path.startsWith('/customers') || $route.path.startsWith('/deliverers') }"
+        :class="{'sidebar-item--active' : $route.path.startsWith('/users') || $route.path.startsWith('/admins') || $route.path.startsWith('/customers') || $route.path.startsWith('/dealers') }"
         class="sidebar-item sidebar-item--w-indicator group"
         aria-controls="sub-menu-1"
         aria-expanded="false"
@@ -26,7 +26,7 @@
           class="sidebar-item-icon"
           :class="{'sidebar-item-icon--active' : $route.path.startsWith('/users') ||
             $route.path.startsWith('/admins') || $route.path.startsWith('/customers') ||
-            $route.path.startsWith('/deliverers') }"
+            $route.path.startsWith('/dealers') }"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -39,7 +39,7 @@
           :class="{ 'rotate-90' : getIsUsersOpen,
                     'sidebar-item-indicator--active' : $route.path.startsWith('/users') ||
                       $route.path.startsWith('/admins') || $route.path.startsWith('/customers') ||
-                      $route.path.startsWith('/deliverers')}"
+                      $route.path.startsWith('/dealers')}"
           class="transition duration-100 transform sidebar-item-indicator"
           viewBox="0 0 20 20"
           aria-hidden="true"
@@ -66,9 +66,9 @@
         </nuxt-link>
 
         <nuxt-link
-          to="/deliverers"
+          to="/dealers"
           class="sidebar-subitem group"
-          :class="{'sidebar-subitem--active' : $route.path.startsWith('/deliverers') }"
+          :class="{'sidebar-subitem--active' : $route.path.startsWith('/dealers') }"
           @click.native="setSidebarOpen"
         >
           Repartidores
