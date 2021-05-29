@@ -1,7 +1,7 @@
 <template>
-  <div class="flex h-screen overflow-hidden bg-white">
+  <div class="h-full">
     <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-    <div class="md:hidden">
+    <div class="lg:hidden">
       <transition leave-active-class="transition duration-300 ease-in-out transform">
         <div v-show="getIsSidebarOpen" class="fixed inset-0 z-40 flex">
           <transition
@@ -46,12 +46,15 @@
                   </button>
                 </transition>
               </div>
-              <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-white border-r border-gray-200">
-                <div class="flex items-center flex-shrink-0 px-4">
+              <aside class="flex flex-col flex-grow py-2 overflow-y-auto bg-white border-r border-gray-200">
+                <!-- <div class="flex items-center flex-shrink-0 px-4">
                   <img class="w-auto h-8" src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg" alt="Workflow">
+                </div> -->
+                <div class="flex items-center flex-shrink-0 px-4">
+                  <img class="w-auto h-10" src="/images/logo.svg" alt="Workflow">
                 </div>
-                <the-sidebar-items />
-              </div>
+                <the-sidebar-items-mobile />
+              </aside>
             </div>
           </transition>
           <div class="flex-shrink-0 w-14" aria-hidden="true">
@@ -61,16 +64,12 @@
       </transition>
     </div>
     <!-- Static sidebar for desktop -->
-    <div class="hidden md:flex md:flex-shrink-0">
-      <div class="flex flex-col w-64">
-        <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-white border-r border-gray-200">
-          <div class="flex items-center flex-shrink-0 px-4">
-            <img class="w-auto h-8" src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg" alt="Workflow">
-          </div>
-          <the-sidebar-items />
-        </div>
+
+    <aside class="fixed z-10 hidden w-64 h-full bg-white border-r border-gray-200 lg:flex-1 lg:flex">
+      <div class="flex flex-col flex-grow">
+        <the-sidebar-items />
       </div>
-    </div>
+    </aside>
   </div>
 </template>
 
@@ -81,8 +80,25 @@ export default {
   computed: {
     ...mapGetters('sidebar', ['getIsSidebarOpen'])
   },
+  watch: {
+    getIsSidebarOpen: {
+      immediate: true,
+      handler (getIsSidebarOpen) {
+        if (process.client) {
+          if (getIsSidebarOpen) {
+            document.body.classList.add('overflow-y-hidden')
+          } else {
+            setTimeout(() => {
+              document.body.classList.remove('overflow-y-hidden')
+            }, 200)
+          }
+        }
+      }
+    }
+  },
   methods: {
     ...mapActions('sidebar', ['setSidebarOpen'])
   }
+
 }
 </script>

@@ -1,0 +1,11 @@
+.base-input {
+  @apply block w-full placeholder-opacity-50 rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500 text-sm focus:ring-opacity-50;
+
+  &--success {
+    @apply border-green-500 focus:border-green-500 focus:ring-green-500 focus:ring-opacity-50;
+  }
+
+  &--error {
+    @apply border-red-500 focus:border-red-500 focus:ring-red-500 focus:ring-opacity-50;
+  }
+}

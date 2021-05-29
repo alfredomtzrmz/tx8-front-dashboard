@@ -1,6 +1,6 @@
 <template>
-  <div class="relative z-10 flex flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow lg:border-none">
-    <button class="px-4 text-gray-400 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-200 md:hidden" @click="setSidebarOpen">
+  <div class="sticky top-0 z-20 flex items-center flex-shrink-0 h-16 px-4 bg-white shadow sm:px-6 lg:px-8">
+    <button class="inline-flex p-2 -mx-1.5 text-gray-500 rounded-md focus:outline-none lg:hidden hover:bg-gray-100" @click="setSidebarOpen">
       <span class="sr-only">Open sidebar</span>
       <svg
         class="w-6 h-6"
@@ -13,11 +13,13 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
       </svg>
     </button>
-    <div class="flex justify-between flex-1 px-4 sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
+    <div class="z-10 items-center flex-shrink-0 hidden p-4 lg:flex">
+      <img class="w-auto h-12" src="/images/logo.svg" alt="Workflow">
+    </div>
+    <div class="flex justify-between flex-1 ">
       <div class="flex items-center ml-auto">
-        <button class="p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-200">
+        <button class="p-1 text-gray-500 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-200">
           <span class="sr-only">View notifications</span>
-          <!-- Heroicon name: outline/bell -->
           <svg
             class="w-6 h-6"
             xmlns="http://www.w3.org/2000/svg"

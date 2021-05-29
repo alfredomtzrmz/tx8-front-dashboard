@@ -1,6 +1,6 @@
 <template>
   <nav class="flex-1 h-0 px-2 py-5 space-y-1 overflow-y-auto bg-white" aria-label="Sidebar">
-    <nuxt-link to="/" class="sidebar-item group" :class="{'sidebar-item--active':$route.name==='index'}">
+    <nuxt-link to="/" class="sidebar-item group" :class="{'sidebar-item--active':$route.name==='index'}" @click.native="setSidebarOpen">
       <svg
         class="sidebar-item-icon"
         :class="{'sidebar-item-icon--active':$route.name==='index'}"
@@ -52,6 +52,7 @@
           to="/users"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/users') }"
+          @click.native="setSidebarOpen"
         >
           Resumen
         </nuxt-link>
@@ -60,6 +61,7 @@
           to="/admins"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/admins') }"
+          @click.native="setSidebarOpen"
         >
           Administradores
         </nuxt-link>
@@ -68,6 +70,7 @@
           to="/deliverers"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/deliverers') }"
+          @click.native="setSidebarOpen"
         >
           Repartidores
         </nuxt-link>
@@ -76,6 +79,7 @@
           to="/customers"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/customers') }"
+          @click.native="setSidebarOpen"
         >
           Clientes
         </nuxt-link>
@@ -121,6 +125,7 @@
           to="/inventory"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/inventory') }"
+          @click.native="setSidebarOpen"
         >
           Resumen
         </nuxt-link>
@@ -128,6 +133,7 @@
           to="/categories"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/categories') }"
+          @click.native="setSidebarOpen"
         >
           Categorías
         </nuxt-link>
@@ -135,6 +141,7 @@
           to="/products"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/products') }"
+          @click.native="setSidebarOpen"
         >
           Productos
         </nuxt-link>
@@ -142,6 +149,7 @@
           to="/packages"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/packages') }"
+          @click.native="setSidebarOpen"
         >
           Paquetes
         </nuxt-link>

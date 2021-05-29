@@ -7,7 +7,7 @@ export default {
   head: {
     title: 'tx8-front-dashboard',
     bodyAttrs: {
-      class: 'font-inter bg-gray-50'
+      class: 'font-inter bg-gray-50 antialiased overflow-y-auto'
     },
     htmlAttrs: {
       lang: 'es'
