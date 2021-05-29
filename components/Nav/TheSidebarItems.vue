@@ -48,13 +48,13 @@
         </svg>
       </button>
       <div v-if="getIsUsersOpen" class="space-y-1">
-        <nuxt-link
+        <!-- <nuxt-link
           to="/users"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/users') }"
         >
           Resumen
-        </nuxt-link>
+        </nuxt-link> -->
 
         <nuxt-link
           to="/admins"
@@ -117,13 +117,13 @@
         </svg>
       </button>
       <div v-if="getIsInventoryOpen" class="space-y-1">
-        <nuxt-link
+        <!-- <nuxt-link
           to="/inventory"
           class="sidebar-subitem group"
           :class="{'sidebar-subitem--active' : $route.path.startsWith('/inventory') }"
         >
           Resumen
-        </nuxt-link>
+        </nuxt-link> -->
         <nuxt-link
           to="/categories"
           class="sidebar-subitem group"

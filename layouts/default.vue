@@ -1,11 +1,9 @@
 <template>
   <div class="flex flex-col w-full min-h-screen">
     <the-navbar />
-    <div class="flex flex-col">
-      <the-sidebar />
-      <main class="relative min-h-screen px-4 py-4 overflow-y-auto lg:ml-64 xs:px-6 xs:py-6 md:py-8 md:px-12">
-        <nuxt />
-      </main>
-    </div>
+    <the-sidebar />
+    <main class="relative p-6 overflow-y-auto sm:p-8 lg:ml-64">
+      <nuxt />
+    </main>
   </div>
 </template>
