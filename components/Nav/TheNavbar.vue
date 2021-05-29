@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky top-0 z-20 flex items-center flex-shrink-0 h-16 px-4 bg-white shadow sm:px-6 lg:px-8">
+  <div class="sticky top-0 z-20 flex items-center flex-shrink-0 px-4 bg-white shadow h-14 sm:px-6 lg:px-8">
     <button class="inline-flex p-2 -mx-1.5 text-gray-500 rounded-md focus:outline-none lg:hidden hover:bg-gray-100" @click="setSidebarOpen">
       <span class="sr-only">Open sidebar</span>
       <svg

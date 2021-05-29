@@ -4,7 +4,7 @@
       <button
         id="user-menu"
         type="button"
-        class="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-200 lg:p-2 lg:rounded-md lg:hover:bg-gray-50"
+        class="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-200 lg:p-1 lg:rounded-md lg:hover:bg-gray-50"
         aria-expanded="false"
         aria-haspopup="true"
         @click.prevent="toggle"
@@ -25,10 +25,10 @@
       leave-to-class="transform scale-95 opacity-0"
     >
       <div v-show="isDropdownOpen" class="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
-        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Tu perfil</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Ajustes</a>
         <button type="button" class="flex w-full px-4 py-2 text-sm text-gray-700 focus:outline-none hover:bg-gray-100" role="menuitem" @click="logout()">
-          Logout
+          Cerrar sesión
         </button>
       </div>
     </transition>

@@ -65,7 +65,7 @@
     </div>
     <!-- Static sidebar for desktop -->
 
-    <aside class="fixed z-10 hidden w-64 h-full bg-white border-r border-gray-200 lg:flex-1 lg:flex">
+    <aside class="fixed z-10 hidden h-full bg-white border-r border-gray-200 w-60 lg:flex-1 lg:flex">
       <div class="flex flex-col flex-grow">
         <the-sidebar-items />
       </div>

@@ -5,9 +5,9 @@
         Clientes
       </h1>
     </div>
-    <div class="h-full overflow-hidden text-center bg-white shadow sm:rounded-lg">
+    <div class="h-full overflow-hidden text-center bg-white rounded-lg shadow">
       <div class="flex flex-col p-8">
-        <img src="@/static/images/index-customer-motion.svg" alt="Index Admin" class="h-auto mx-auto w-60">
+        <img src="@/static/images/index-customer-motion.svg" alt="Index clientes" class="h-auto mx-auto w-60">
         <p class="text-xl">
           Gestionar los detalles del cliente
         </p>

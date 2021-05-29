@@ -5,9 +5,9 @@
         Administradores
       </h1>
     </div>
-    <div class="h-full overflow-hidden text-center bg-white shadow sm:rounded-lg">
+    <div class="h-full overflow-hidden text-center bg-white rounded-lg shadow">
       <div class="flex flex-col p-8">
-        <img src="@/static/images/index-admin-motion.svg" alt="Index Admin" class="h-auto mx-auto w-60">
+        <img src="@/static/images/index-admin-motion.svg" alt="Index administradores" class="h-auto mx-auto w-60">
 
         <p class="text-xl">
           Agregar y gestionar los administradores
