@@ -88,3 +88,7 @@ sw.*
 
 # Vim swap files
 *.swp
+
+#Directory of Fonts
+assets/fonts
+assets/scss/base/_fonts.scss
