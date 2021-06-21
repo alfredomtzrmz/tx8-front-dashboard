@@ -4,6 +4,7 @@ export default {
     port: 8000,
     host: '0.0.0.0'
   },
+  target: 'server',
   head: {
     title: 'tx8-front-dashboard',
     bodyAttrs: {
