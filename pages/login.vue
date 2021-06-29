@@ -10,7 +10,7 @@
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-        <form class="space-y-6" @submit.prevent="userLogin">
+        <form class="space-y-6" novalidate @submit.prevent="userLogin">
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700">
               Email
@@ -22,9 +22,14 @@
                 name="email"
                 type="email"
                 autocomplete="email"
-                required
+                :class="{'base-input--error': errors.email || errors.invalid}"
                 class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               >
+            </div>
+            <div v-if="errors.email" class="flex flex-col">
+              <span v-for="error in errors.email" :key="error.id" class="mt-1 text-xs text-red-500">
+                {{ error }}
+              </span>
             </div>
           </div>
 
@@ -39,11 +44,20 @@
                 name="password"
                 type="password"
                 autocomplete="current-password"
-                required
+                :class="{'base-input--error': errors.password || errors.invalid}"
                 class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               >
             </div>
+            <div v-if="errors.password" class="flex flex-col">
+              <span v-for="error in errors.password" :key="error.id" class="mt-1 text-xs text-red-500">
+                {{ error }}
+              </span>
+            </div>
           </div>
+
+          <span v-if="errors.invalid" class="mt-1 text-xs text-red-500">
+            {{ errors.invalid }}
+          </span>
 
           <div class="flex items-center justify-between">
             <div class="text-sm">
@@ -52,9 +66,8 @@
               </a>
             </div>
           </div>
-
-          <div>
-            <base-button :is-loading="isLoading" type="submit" class="w-full">
+          <div class="flex items-center justify-items-center">
+            <base-button :is-loading="isLoading" :disabled="isLoading" type="submit" class="w-full">
               Entrar
             </base-button>
           </div>
@@ -69,23 +82,30 @@ export default {
   name: 'Login',
   layout: 'auth',
   middleware: 'auth',
+  transition: 'tweakOpacity',
   auth: 'guest',
   data () {
     return {
       isLoading: false,
       login: {
-        email: 'isidro.ram@gmail.com',
-        password: 'password'
-      }
+        email: '',
+        password: ''
+      },
+      errors: {}
     }
   },
   methods: {
     async userLogin () {
       try {
         this.isLoading = true
+        this.errors = {}
         await this.$auth.loginWith('laravelJWT', { data: this.login })
-      } catch (err) {
-        console.log(err)
+      } catch (e) {
+        if (e.response.status === 422) {
+          this.errors = e.response.data.errors
+        } else if (e.response.status === 401) {
+          this.errors.invalid = e.response.data.message
+        }
       } finally {
         this.isLoading = false
       }

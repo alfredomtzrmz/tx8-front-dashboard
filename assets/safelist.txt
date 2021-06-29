@@ -1,0 +1,15 @@
+transform
+ease-out
+duration-300
+transition
+delay-300
+translate-y-2
+opacity-0
+opacity-100
+sm:translate-y-0
+sm:translate-x-4
+translate-y-0
+opacity-100
+sm:translate-x-0
+ease-in
+duration-500
