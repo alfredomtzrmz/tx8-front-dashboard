@@ -2,7 +2,7 @@
   <div class="max-w-5xl mx-auto space-y-5">
     <div class="flex">
       <div class="lg:space-x-4 flex flex-col lg:flex-row lg:items-center items-start text-gray-600 w-min px-0.5 nuxt-link-active space-y-2 lg:space-y-0">
-        <base-button variant="transparent" size="icon" to="/admins">
+        <base-button variant="transparent" size="icon" to="/categories">
           <svg class="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
