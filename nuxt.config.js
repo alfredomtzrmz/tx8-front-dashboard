@@ -6,12 +6,12 @@ export default {
   },
   target: 'server',
   head: {
-    title: 'tx8-front-dashboard',
+    title: 'TX8 - Dashboard',
     bodyAttrs: {
       class: 'font-inter bg-gray-50 antialiased overflow-y-auto'
     },
     htmlAttrs: {
-      lang: 'es'
+      lang: 'es-MX'
     },
     meta: [
       { charset: 'utf-8' },
@@ -27,9 +27,14 @@ export default {
   css: [
   ],
 
+  layoutTransition: 'tweakOpacity',
+  pageTransition: 'tweakOpacity',
+
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/vt-notifications' },
+    { src: '~/plugins/v-maska' },
+    { src: '~/plugins/v-select' },
     { src: '~/plugins/vuex-persistedstate' }
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components

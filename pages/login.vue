@@ -82,7 +82,6 @@ export default {
   name: 'Login',
   layout: 'auth',
   middleware: 'auth',
-  transition: 'tweakOpacity',
   auth: 'guest',
   data () {
     return {

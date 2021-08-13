@@ -2,21 +2,22 @@
   <div class="flex flex-col w-full space-y-6">
     <div class="flex justify-between">
       <h1 class="text-xl font-medium">
-        Repartidores
+        Productos
       </h1>
     </div>
     <div class="h-full overflow-hidden text-center bg-white rounded-lg shadow">
       <div class="flex flex-col p-8">
-        <img src="@/static/images/main-pages/main-dealer-motion.svg" alt="index repartidores" class="h-auto mx-auto w-60">
+        <img src="@/static/images/main-pages/main-product-motion.svg" alt="Index administradores" class="h-auto mx-auto w-72">
+
         <p class="text-xl">
-          Gestionar los detalles del repartidor
+          Agregar y gestionar tus productos
         </p>
         <p class="max-w-xs mx-auto my-4 text-sm text-gray-500">
-          Aquí es donde puede ver la información de los repartidores y gestionar su información.
+          Aquí es donde agregarás productos y gestionarás tus precios. También puedes importar y exportar tu inventario de productos.
         </p>
         <div class="mt-2 mb-6">
-          <base-button to="/dealers/create">
-            Agregar repartidor
+          <base-button to="/products/create">
+            Agregar producto
           </base-button>
         </div>
       </div>
@@ -26,7 +27,7 @@
 
 <script>
 export default {
-  name: 'Dealers',
+  name: 'Admins',
   layout: 'default'
 }
 </script>

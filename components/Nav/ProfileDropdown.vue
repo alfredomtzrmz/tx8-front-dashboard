@@ -10,7 +10,7 @@
         @click.prevent="toggle"
       >
         <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixqx=ewQE7Eu8DO&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-        <span class="hidden ml-3 text-sm font-medium text-gray-700 lg:block"><span class="sr-only">Open user menu for </span>Isidro Martinez</span>
+        <span class="hidden ml-3 text-sm font-medium text-gray-700 lg:block"><span class="sr-only">Open user menu for </span>{{ userName }} {{ userSurnames }}</span>
         <svg class="flex-shrink-0 hidden w-5 h-5 ml-1 text-gray-400 lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
@@ -36,10 +36,22 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
 export default {
   data () {
     return {
       isDropdownOpen: false
+    }
+  },
+  computed: {
+    userInfo () {
+      return _.get(this.$store.state, ['auth', 'user', 'user_details'], null)
+    },
+    userName () {
+      return _.get(this.userInfo, ['name'], '')
+    },
+    userSurnames () {
+      return _.get(this.userInfo, ['surnames'], '')
     }
   },
   beforeMount () {
@@ -49,7 +61,6 @@ export default {
   beforeDestroy () {
     window.removeEventListener('click', this.close)
   },
-
   methods: {
     async logout () {
       this.isDropdownOpen = false

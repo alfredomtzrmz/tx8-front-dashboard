@@ -2,13 +2,17 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: {
+    whitelistPatterns: [
+      /multiselect/
+    ],
     content: [
       'components/**/*.{vue,js}',
       'layouts/**/*.vue',
       'pages/**/*.vue',
       'plugins/**/*.{js,ts}',
       'nuxt.config.{js,ts}',
-      'assets/safelist.txt'
+      'assets/safelist.txt',
+      '/multiselect/'
     ]
   },
   darkMode: false, // or 'media' or 'class'
@@ -20,16 +24,16 @@ module.exports = {
       black: '#000',
       white: '#FFF',
       primary: {
-        50: '#FDFBF7',
-        100: '#f7f1e5',
-        200: '#efe4cb',
-        300: '#e7d6b0',
-        400: '#dfc996',
-        500: '#d7bb7c',
-        600: '#ac9663',
-        700: '#81704a',
-        800: '#564b32',
-        900: '#2b2519'
+        50: '#FCFAF4',
+        100: '#F9F4E9',
+        200: '#EFE4C9',
+        300: '#E5D4A8',
+        400: '#D2B366',
+        500: '#BF9325',
+        600: '#AC8421',
+        700: '#735816',
+        800: '#564211',
+        900: '#392C0B'
       },
       yellow: {
         100: '#fef3c7',
