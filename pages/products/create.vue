@@ -550,13 +550,14 @@ export default {
           this.$router.push(`/products/${data.product.id}`)
         }, 500)
       } catch (e) {
-        const status = e.response.status
-        this.errors = status === 422 ? e.response.data.errors : {}
-        const message = status === 422 ? 'Por favor, revisa los campos marcados' : 'Intentalo más tarde'
-        setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        }, 10)
-        this.$notify({ group: 'top', type: 'error', title: '¡Error!', text: message }, 2000)
+        console.log(e)
+        // const status = e.response.status
+        // this.errors = status === 422 ? e.response.data.errors : {}
+        // const message = status === 422 ? 'Por favor, revisa los campos marcados' : 'Intentalo más tarde'
+        // setTimeout(() => {
+        //   window.scrollTo({ top: 0, behavior: 'smooth' })
+        // }, 10)
+        // this.$notify({ group: 'top', type: 'error', title: '¡Error!', text: message }, 2000)
       } finally {
         this.isLoadingStore = false
       }
