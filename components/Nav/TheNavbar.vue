@@ -1,6 +1,6 @@
 <template>
-  <div class="sticky top-0 z-20 flex items-center flex-shrink-0 px-4 bg-white shadow h-14 sm:px-6 lg:px-8">
-    <button class="inline-flex p-2 -mx-1.5 text-gray-500 rounded-md focus:outline-none lg:hidden hover:bg-gray-100" @click="setSidebarOpen">
+  <div class="sticky top-0 z-20 flex items-center flex-shrink-0 px-4 bg-white shadow h-14 sm:px-6 md:px-8">
+    <button class="inline-flex p-2 -mx-1.5 text-gray-500 rounded-md focus:outline-none md:hidden hover:bg-gray-100" @click="setSidebarOpen">
       <span class="sr-only">Open sidebar</span>
       <svg
         class="w-6 h-6"
@@ -13,7 +13,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
       </svg>
     </button>
-    <div class="z-10 items-center flex-shrink-0 hidden p-4 lg:flex">
+    <div class="z-10 items-center flex-shrink-0 hidden p-4 md:flex">
       <img class="w-auto h-12" src="/images/logo.svg" alt="Workflow">
     </div>
     <div class="flex justify-between flex-1 ">

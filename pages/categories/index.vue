@@ -27,7 +27,6 @@
 <script>
 export default {
   name: 'Categories',
-  layout: 'default',
-  transition: 'tweakOpacity'
+  layout: 'default'
 }
 </script>

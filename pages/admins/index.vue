@@ -28,7 +28,6 @@
 <script>
 export default {
   name: 'Admins',
-  layout: 'default',
-  transition: 'tweakOpacity'
+  layout: 'default'
 }
 </script>

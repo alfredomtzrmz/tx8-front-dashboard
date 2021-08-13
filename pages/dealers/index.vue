@@ -27,7 +27,6 @@
 <script>
 export default {
   name: 'Dealers',
-  layout: 'default',
-  transition: 'tweakOpacity'
+  layout: 'default'
 }
 </script>

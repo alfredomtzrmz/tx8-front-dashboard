@@ -1,5 +1,5 @@
 .base-input {
-  @apply block w-full placeholder-gray-400 rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500 text-sm focus:ring-opacity-50;
+  @apply block w-full placeholder-gray-400 rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500 focus:ring-opacity-50 sm:text-sm;
 
   &--success {
     @apply border-green-500 focus:border-green-500 focus:ring-green-500 focus:ring-opacity-50;
@@ -8,4 +8,16 @@
   &--error {
     @apply border-red-500 focus:border-red-500 focus:ring-red-500 focus:ring-opacity-50;
   }
+}
+
+.base-checkbox {
+  @apply w-4 h-4 rounded text-primary-600 border-gray-400 focus:border-primary-500 focus:ring-primary-500 focus:ring-opacity-50;
+}
+
+.base-label {
+  @apply block text-sm text-gray-700;
+}
+
+.custom-select {
+  @apply block w-full placeholder-gray-400 bg-transparent rounded-md border-transparent focus:border-primary-500 focus:ring-primary-500 focus:ring-opacity-50 sm:text-sm;
 }
