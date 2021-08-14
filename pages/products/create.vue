@@ -536,7 +536,7 @@ export default {
 
       try {
         // First store the thumbnail and retrieve the path
-        const { data: thumbnailPath } = await this.$axios.$post('/products/thumbnail', this.storeThumbnail(), { progress: false })
+        const { data: thumbnailPath } = await this.$axios.$post('/products/thumbnail', this.storeThumbnail())
         const { variants, type } = this.getVariants(thumbnailPath)
         // later store the product and variants
         const tempProduct = {
@@ -544,20 +544,19 @@ export default {
           type,
           variants
         }
-        const { data } = await this.$axios.$post('/products/', tempProduct, { progress: false })
+        const { data } = await this.$axios.$post('/products/', tempProduct)
         this.$notify({ group: 'top', type: 'success', title: '¡Guardado exitosamente!', text: 'El producto ha sido creado' }, 2000)
         setTimeout(() => {
           this.$router.push(`/products/${data.product.id}`)
         }, 500)
       } catch (e) {
-        console.log(e)
-        // const status = e.response.status
-        // this.errors = status === 422 ? e.response.data.errors : {}
-        // const message = status === 422 ? 'Por favor, revisa los campos marcados' : 'Intentalo más tarde'
-        // setTimeout(() => {
-        //   window.scrollTo({ top: 0, behavior: 'smooth' })
-        // }, 10)
-        // this.$notify({ group: 'top', type: 'error', title: '¡Error!', text: message }, 2000)
+        const status = e.response.status
+        this.errors = status === 422 ? e.response.data.errors : {}
+        const message = status === 422 ? 'Por favor, revisa los campos marcados' : 'Intentalo más tarde'
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }, 10)
+        this.$notify({ group: 'top', type: 'error', title: '¡Error!', text: message }, 2000)
       } finally {
         this.isLoadingStore = false
       }
