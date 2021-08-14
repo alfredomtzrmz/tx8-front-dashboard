@@ -544,7 +544,7 @@ export default {
           type,
           variants
         }
-        const { data } = await this.$axios.$post('/products/', tempProduct)
+        const { data } = await this.$axios.$post('/products', tempProduct)
         this.$notify({ group: 'top', type: 'success', title: '¡Guardado exitosamente!', text: 'El producto ha sido creado' }, 2000)
         setTimeout(() => {
           this.$router.push(`/products/${data.product.id}`)
