@@ -17,7 +17,11 @@ module.exports = {
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        xs: '425px'
+      }
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
@@ -103,6 +107,7 @@ module.exports = {
     }
   },
   plugins: [
+    require('@tailwindcss/line-clamp'),
     require('@tailwindcss/forms')
   ]
 }
