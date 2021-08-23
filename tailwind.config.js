@@ -20,6 +20,9 @@ module.exports = {
     extend: {
       screens: {
         xs: '425px'
+      },
+      animation: {
+        'spin-faster': 'spin .5s linear infinite'
       }
     },
     colors: {
