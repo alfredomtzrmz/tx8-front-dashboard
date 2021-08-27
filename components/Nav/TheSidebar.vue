@@ -67,7 +67,7 @@
 
     <aside class="fixed z-10 hidden h-full bg-white border-r border-gray-200 w-60 md:flex-1 md:flex">
       <div class="flex flex-col flex-grow">
-        <the-sidebar-items />
+        <TheSidebarItems />
       </div>
     </aside>
   </div>

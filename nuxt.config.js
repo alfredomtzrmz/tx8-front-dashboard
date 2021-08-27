@@ -100,7 +100,6 @@ export default {
         },
         user: {
           property: 'data'
-          // autoFetch: true
         },
         token: {
           property: 'data.access_token',

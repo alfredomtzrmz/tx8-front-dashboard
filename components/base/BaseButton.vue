@@ -28,7 +28,7 @@
 
 <script>
 const AVAILABLE_VARIANTS = ['primary', 'white', 'transparent']
-const AVAILABLE_SIZES = ['sm', 'md', 'icon']
+const AVAILABLE_SIZES = ['sm', 'md', 'icon', 'mini']
 export default {
   name: 'BaseButton',
   inheritAttrs: false,
