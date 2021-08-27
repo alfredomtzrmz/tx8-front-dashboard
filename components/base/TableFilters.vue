@@ -5,7 +5,7 @@
       type="button"
       aria-expanded="true"
       aria-haspopup="true"
-      class="relative z-10 inline-flex items-center px-4 py-2 -ml-px font-medium text-gray-700 bg-white border border-gray-300 sm:text-sm justify-items-center rounded-l-md xs:rounded-l-none rounded-r-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 focus:ring-opacity-50"
+      class="relative inline-flex items-center px-4 py-2 -ml-px font-medium text-gray-700 bg-white border border-gray-300 sm:text-sm justify-items-center rounded-l-md xs:rounded-l-none rounded-r-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 focus:ring-opacity-50"
       @click.prevent="toggle()"
     >
       <span class="hidden xs:block">

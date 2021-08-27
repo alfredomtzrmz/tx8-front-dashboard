@@ -1,7 +1,7 @@
 <template>
   <div class="h-full">
     <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-    <div class="md:hidden">
+    <div class="lg:hidden">
       <transition leave-active-class="transition duration-300 ease-in-out transform">
         <div v-show="getIsSidebarOpen" class="fixed inset-0 z-40 flex">
           <transition
@@ -65,7 +65,7 @@
     </div>
     <!-- Static sidebar for desktop -->
 
-    <aside class="fixed z-10 hidden h-full bg-white border-r border-gray-200 w-60 md:flex-1 md:flex">
+    <aside class="fixed z-10 hidden h-full bg-white border-r border-gray-200 w-60 lg:flex-1 lg:flex">
       <div class="flex flex-col flex-grow">
         <TheSidebarItems />
       </div>

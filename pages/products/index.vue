@@ -33,7 +33,7 @@
                   </div>
                 </div>
                 <div class="relative z-10 inline-flex rounded-md shadow-sm">
-                  <div class="hidden xs:block">
+                  <div class="z-10 hidden xs:block">
                     <label for="itemsCount" class="sr-only">Elementos a mostrar</label>
                     <select id="itemsCount" v-model="itemsPerPage" name="itemsCount" class="select-table rounded-l-md" @change="debounceSearchOrFilterProduct">
                       <option v-for="(item,index) in itemsPerPageData" :key="index" :value="item">
@@ -118,7 +118,7 @@
                         </div>
                       </div>
                       <div class="flex justify-between px-4 py-2 border-t">
-                        <base-button variant="white" size="mini" :disabled="isFetching || atLeastOneFilter" @onClick="clearFilters">
+                        <base-button variant="white" size="mini" :disabled="isFetching" @onClick="clearFilters">
                           <span>
                             Limpiar
                           </span>
@@ -152,12 +152,12 @@
                   <table v-if="products.data.length >0 " class="w-full divide-y table-fixed divide-gray-50">
                     <thead class="border-b bg-gray-50">
                       <tr>
-                        <th class="w-64 px-6 py-3">
+                        <th class="px-6 py-3 lg:w-64 w-72">
                           <div class="flex items-center text-xs text-left">
                             <span class="font-medium tracking-wider text-gray-500 uppercase"> Producto </span>
                           </div>
                         </th>
-                        <th class="w-24 px-6 py-3">
+                        <th class="px-6 py-3 lg:w-24 w-28">
                           <div class="flex items-center text-xs text-left">
                             <span class="font-medium tracking-wider text-gray-500 uppercase"> Estado </span>
                           </div>
@@ -338,9 +338,11 @@ export default {
       return product.type === 'single' ? 'Simple' : 'Variantes'
     },
     clearFilters () {
+      if (this.stateProductFilters.length >= 1 || this.typeProductFilters.length >= 1) {
+        this.debounceSearchOrFilterProduct()
+      }
       this.stateProductFilters = []
       this.typeProductFilters = []
-      this.debounceSearchOrFilterProduct()
     },
     debounceSearchOrFilterProduct: _.debounce(function () {
       this.searchOrSelectProduct()
