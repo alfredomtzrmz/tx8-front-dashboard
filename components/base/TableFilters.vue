@@ -5,12 +5,14 @@
       type="button"
       aria-expanded="true"
       aria-haspopup="true"
-      class="relative inline-flex items-center px-4 py-2 -ml-px font-medium text-gray-700 bg-white border border-gray-300 sm:text-sm justify-items-center rounded-r-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 focus:ring-opacity-50"
+      class="relative z-10 inline-flex items-center px-4 py-2 -ml-px font-medium text-gray-700 bg-white border border-gray-300 sm:text-sm justify-items-center rounded-l-md xs:rounded-l-none rounded-r-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 focus:ring-opacity-50"
       @click.prevent="toggle()"
     >
-      {{ name }}
-      <svg class="flex-shrink-0 w-6 h-6 ml-2 -mr-1 text-gray-500 sm:w-5 sm:h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+      <span class="hidden xs:block">
+        Filtros
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-6 h-6 text-gray-500 xs:ml-2 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
       </svg>
     </button>
     <transition
@@ -24,12 +26,12 @@
       <div
         v-show="isDropdownOpen"
         :class="size"
-        class="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="absolute right-0 z-10 mt-2 origin-top-right bg-white rounded-md shadow-lg lg:left-0 lg:origin-top-left ring-1 ring-black ring-opacity-5 focus:outline-none"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="options-menu"
       >
-        <div class="py-1" role="none" :class="{'overflow-y-auto max-h-64':scrollable}">
+        <div role="none">
           <slot name="dropdown-body">
             <!--                        I'm the default body!-->
           </slot>
@@ -49,11 +51,7 @@ export default {
     },
     size: {
       type: String,
-      default: 'w-36'
-    },
-    scrollable: {
-      type: Boolean,
-      default: false
+      default: 'w-44'
     }
   },
   data () {
