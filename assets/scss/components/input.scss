@@ -23,7 +23,7 @@
 }
 
 .select-table{
-  @apply block placeholder-gray-400 text-gray-700 font-medium cursor-pointer border-gray-300 focus:border-primary-500 focus:ring-primary-500 focus:ring-opacity-50 sm:text-sm focus:z-20;
+  @apply block placeholder-gray-400 text-gray-700 font-medium cursor-pointer border-gray-300 focus:border-primary-500 focus:ring-primary-500 focus:ring-opacity-50 sm:text-sm focus:z-10;
 }
 
 select.select-table {
