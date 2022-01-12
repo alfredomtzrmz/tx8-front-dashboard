@@ -1,7 +1,7 @@
 .sidebar {
   &-item {
 
-    @apply flex items-center w-full text-sm transition duration-100 ease-in-out font-medium bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-200 rounded-md py-2 pl-2;
+    @apply flex items-center w-full text-sm transition duration-100 ease-in-out font-medium bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-200 rounded-md py-2 pl-2;
 
     &--w-indicator {
       @apply pr-1;
@@ -20,7 +20,7 @@
     }
 
     &-icon {
-      @apply w-6 h-6 mr-3 text-gray-400 group-hover:text-gray-500;
+      @apply w-6 h-6 mr-3 text-gray-500 group-hover:text-gray-500;
 
       &--active {
         @apply text-primary-600 group-hover:text-primary-600;

@@ -54,11 +54,17 @@ export default {
       return _.get(this.userInfo, ['surnames'], '')
     }
   },
+  mounted () {
+    this.$echo.channel('test')
+      .listen('NewMessage', (e) => {
+        this.$notify({ group: 'top', type: 'error', title: 'PRODUCTO CREADO', text: e.message }, 5000)
+      })
+  },
   beforeMount () {
     window.addEventListener('click', this.close)
   },
-
   beforeDestroy () {
+    this.$echo.leave('test')
     window.removeEventListener('click', this.close)
   },
   methods: {

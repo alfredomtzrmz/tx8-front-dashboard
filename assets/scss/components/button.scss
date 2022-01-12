@@ -22,10 +22,14 @@
   }
 
   &--icon {
-    @apply px-2 py-2 text-sm;
+    @apply p-2 text-sm;
   }
 
   &--mini {
     @apply py-0.5 px-2 text-sm leading-5 h-auto;
   }
+}
+
+a.base-button[disabled]{
+  @apply opacity-50 no-underline pointer-events-none cursor-not-allowed ;
 }

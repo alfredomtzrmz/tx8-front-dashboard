@@ -25,6 +25,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    '@/assets/scss/main.scss'
   ],
 
   layoutTransition: 'tweakOpacity',
@@ -33,8 +34,11 @@ export default {
   loading: false,
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/echo', mode: 'client' },
     { src: '~/plugins/vt-notifications' },
     { src: '~/plugins/v-maska' },
+    { src: '~/plugins/v-tippy' },
+    { src: '~/plugins/v-clipboard' },
     { src: '~/plugins/v-select' },
     { src: '~/plugins/vuex-persistedstate' }
   ],
@@ -47,16 +51,9 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
-    // https://tailwindcss.nuxtjs.org/
-    '@nuxtjs/tailwindcss',
     // https://google-fonts.nuxtjs.org/
     '@nuxtjs/google-fonts'
   ],
-
-  tailwindcss: {
-    cssPath: '~/assets/scss/main.scss',
-    jit: true
-  },
   googleFonts: {
     families: {
       Inter: {
@@ -73,7 +70,8 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://auth.nuxtjs.org/
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxt/postcss8'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -118,14 +116,18 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    postcss: {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {}
+      }
+    },
     transpile: [
       'vt-notifications'
     ]
   },
 
-  privateRuntimeConfig: {
-    axios: {
-      baseURL: process.env.BASE_URL
-    }
+  publicRuntimeConfig: {
+    baseImageUrl: process.env.TX8_S3_URL
   }
 }

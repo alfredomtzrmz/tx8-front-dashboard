@@ -99,6 +99,5 @@ export default {
   methods: {
     ...mapActions('sidebar', ['setSidebarOpen'])
   }
-
 }
 </script>

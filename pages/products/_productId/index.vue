@@ -9,11 +9,11 @@
             </svg>
           </base-button>
           <span class="text-xl font-medium text-gray-900">
-            Agregar producto
+            {{ product.name }}
           </span>
         </div>
       </div>
-      <!-- Form -->
+
       <form enctype="multipart/form-data" class="flex flex-col w-full space-y-6" novalidate @submit.prevent="storeProduct">
         <div class="grid grid-cols-1 gap-6 md:grid-flow-col-dense md:grid-cols-3">
           <!-- left/up content -->
@@ -167,7 +167,7 @@
                             </span>
                           </div>
                         </th>
-                        <th scope="col" class="relative w-32 px-4 py-4 sm:px-5">
+                        <th scope="col" class="relative w-40 px-4 py-4 xl:w-36 sm:px-5">
                           <span class="sr-only">Acción</span>
                         </th>
                       </tr>
@@ -206,11 +206,16 @@
                         </td>
                         <td class="px-4 py-4 text-left truncate sm:px-5">
                           <div class="flex items-center">
-                            <base-button variant="white" type="button" size="icon" @onClick="removeVariantFromArray(index)">
-                              <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                              </svg>
-                            </base-button>
+                            <span class="relative z-0 inline-flex rounded-md shadow-sm">
+                              <button type="button" class="relative inline-flex items-center h-10 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md focus:z-10 hover:bg-gray-50 focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50" @click="removeVariantFromArray(index)">
+                                <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              </button>
+                              <nuxt-link :to="`/products/${product.id}/variants/43424`" type="button" class="relative inline-flex items-center h-10 px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md focus:z-10 hover:bg-gray-50 focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50">
+                                Editar
+                              </nuxt-link>
+                            </span>
                           </div>
                         </td>
                       </tr>
@@ -226,9 +231,20 @@
             </div>
             <!-- product image -->
             <div class="px-4 py-5 space-y-6 bg-white rounded-md shadow sm:px-5">
-              <h2 class="text-base font-semibold text-gray-900">
-                Elementos multimedia
-              </h2>
+              <div class="flex items-center space-x-2">
+                <h2 class="text-base font-semibold text-gray-900">
+                  Elementos multimedia
+                </h2>
+                <button
+                  v-tippy="{appendTo: 'parent', maxWidth:200, theme: 'light', placement:'bottom', animation : 'scale'}"
+                  content="Vas a cambiar la imagen a todas tus variantes, si deseas cambiar la imagen de una variante, edita la variante."
+                  class="relative focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50" type="button"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
               <div>
                 <label class="base-label">Imagen del producto</label>
                 <div class="flex justify-center w-full px-6 pt-5 pb-6 mt-1 border-2 border-dashed rounded-md h-72 sm:h-80" :class="{'border-primary-500' : draggingProductPicture,'border-gray-300' : !draggingProductPicture,'border-red-500' : errors.thumbnail}" @dragover.prevent="draggingProductPicture=true" @dragleave="draggingProductPicture=false" @dragend="draggingProductPicture=false" @drop="onDropProductThumbnail($event)">
@@ -236,7 +252,7 @@
                     <template v-if="productThumbnailImage">
                       <div class="relative w-full h-full">
                         <div class="absolute flex items-center justify-center w-full h-full">
-                          <img :src="productThumbnailImage" class="object-cover object-center h-full" alt="previewthumbnailProduct">
+                          <LoadedImage :src="productThumbnailImage" alt="previewthumbnailProduct" classes="object-cover object-center h-full" />
                         </div>
                       </div>
                     </template>
@@ -297,7 +313,7 @@
               <h2 class="text-base font-semibold text-gray-900">
                 Organización
               </h2>
-              <!-- Product Category-->
+              <!-- Product Status-->
               <div class="flex flex-col col-span-6">
                 <label for="product_category" class="base-label">Categoría</label>
                 <v-select id="product_category" v-model="product.category_id" :class="{'vs__dropdown-toggle--error': errors.category_id}" class="mt-1" placeholder="Selecciona una categoría" :clearable="false" label="name" :options="categories" :searchable="true" :reduce="category => category.id">
@@ -336,10 +352,10 @@
           </div>
         </div>
         <div class="flex items-center justify-end py-3 space-x-3 border-t">
-          <base-button :disabled="isLoadingStore" to="/products" variant="white" class="w-32">
+          <base-button :disabled="isLoadingEdit" to="/products" variant="white" class="w-32">
             Cancelar
           </base-button>
-          <base-button :disabled="isLoadingStore || !isFormComplete" type="submit" :is-loading="isLoadingStore" class="w-32">
+          <base-button :disabled="isLoadingEdit || !isFormComplete" type="submit" :is-loading="isLoadingEdit" class="w-32">
             Guardar
           </base-button>
         </div>
@@ -351,49 +367,40 @@
 
 <script>
 import * as _ from 'lodash'
-const VALIDATE_EXTENSIONS = ['jpg', 'png', 'jpeg']
+
 export default {
-  name: 'ProductsCreate',
+  name: 'EditProduct',
   data () {
     return {
       isLoaded: false,
-      isLoadingStore: false,
-      draggingProductPicture: false,
+      isLoadingEdit: false,
       enabledVariants: false,
-      enableSimpleProductDynamicPricing: false,
+      draggingProductPicture: false,
       errors: {},
       categories: [],
       nomenclatures: [],
-      product: {
-        name: '',
-        description: '',
-        status: 0,
-        price: null,
-        compare_at_price: null,
-        inventory_cost: null,
-        category_id: '',
-        thumbnail: '',
-        stock: 0,
-        sku: null,
-        barcode: null
-      },
+      product: {},
+      variantsArray: [],
       productThumbnailImage: null,
       productThumbnailImageError: '',
-      variantsArray: [],
-      messageInSelectedStatus: 'Este producto no estará disponible para su venta.'
+      messageInSelectedStatus: 'Este producto no estará disponible para su venta.',
+      baseUrl: this.$config.baseImageUrl
     }
   },
   async fetch () {
     await this.fetchCategories()
     await this.fetchNomenclatures()
+    await this.fetchProduct()
     this.isLoaded = true
   },
+  fetchOnServer: false,
   computed: {
     marginPrice () {
       if (!this.product.price || !this.product.inventory_cost) {
         return '-'
       }
-      const gain = parseFloat(((this.product.price - this.product.inventory_cost) / this.product.price) * 100).toFixed(1)
+      const gain = parseFloat(
+        ((this.product.price - this.product.inventory_cost) / this.product.price) * 100).toFixed(1)
       return `${gain}%`
     },
     gainPrice () {
@@ -412,7 +419,7 @@ export default {
   },
   watch: {
     enabledVariants (newValue) {
-      if (newValue) {
+      if (newValue && this.variantsArray.length <= 0) {
         this.variantsArray = []
         const emptyVariant = {
           nomenclature_id: this.nomenclatures[0].id,
@@ -421,8 +428,6 @@ export default {
           stock: 0
         }
         this.variantsArray.push(emptyVariant)
-      } else if (!newValue) {
-        this.variantsArray = []
       }
     },
     'product.status' (newValue) {
@@ -430,73 +435,22 @@ export default {
     }
   },
   methods: {
-    onDropProductThumbnail (event) {
-      event.stopPropagation()
-      event.preventDefault()
-      const files = event.dataTransfer.files
-      this.createFileProductImage(files[0])
-      this.draggingProductPicture = false
-    },
-    onChangeProductThumbnail (event) {
-      const files = event.target.files
-      if (files[0]) {
-        this.createFileProductImage(files[0])
+    async fetchProduct () {
+      try {
+        const productId = this.$route.params.productId
+        const { data } = await this.$axios.$get(`/products/${productId}`)
+        this.setProduct(data)
+      } catch (e) {
+        this.$notify(
+          {
+            group: 'top',
+            type: 'error',
+            title: '¡Error!',
+            text: 'Ocurrió un error al obtener el producto'
+          },
+          3000
+        )
       }
-      event.target.value = ''
-    },
-    validateImage (file) {
-      let errorMessage = ''
-      let isValid = true
-      if (file.type.match('image.*')) {
-        const fileExtension = _.toLower(file.name.split('.').pop())
-        const fileSize = file.size / 1024
-        if (!VALIDATE_EXTENSIONS.includes(fileExtension)) {
-          errorMessage = 'Selecciona un tipo de imagen válido (png, jpeg o jpg)'
-          isValid = false
-        } else if (fileSize >= 5120) {
-          errorMessage = 'El tamaño máximo de carga es de 5MB'
-          isValid = false
-        }
-      } else {
-        errorMessage = 'Solo puedes subir imágenes'
-        isValid = false
-      }
-      return { isValid, errorMessage }
-    },
-    createFileProductImage (file) {
-      const { isValid, errorMessage } = this.validateImage(file)
-      if (isValid) {
-        const reader = new FileReader()
-        const vm = this
-        reader.onload = function (e) {
-          vm.productThumbnailImage = e.target.result
-        }
-        reader.readAsDataURL(file)
-        this.errors.thumbnail = null
-        this.product.thumbnail = file
-      } else {
-        this.errors.thumbnail = [errorMessage]
-      }
-    },
-    removeProductThumbnail () {
-      this.productThumbnailImage = null
-      this.errors.thumbnail = null
-      this.product.thumbnail = null
-    },
-    addNewVariant () {
-      const emptyVariant = {
-        nomenclature_id: this.nomenclatures[0].id,
-        nomenclature_value: '',
-        price: null,
-        stock: 0
-      }
-      this.variantsArray.push(emptyVariant)
-    },
-    removeVariantFromArray (index) {
-      if (this.variantsArray.length === 1) {
-        this.enabledVariants = false
-      }
-      this.variantsArray.splice(index, 1)
     },
     async fetchCategories () {
       try {
@@ -530,77 +484,41 @@ export default {
         )
       }
     },
-    async storeProduct () {
-      this.isLoadingStore = true
-      let thumbnailPath = null
-      try {
-        if (this.productThumbnailImage != null) {
-          // First store the thumbnail and retrieve the path
-          const { data } = await this.$axios.$post('/products/thumbnail', this.storeThumbnail())
-          thumbnailPath = data
-        }
+    setProduct (data) {
+      this.enabledVariants = data.type === 'variant'
+      this.variantsArray = data.type === 'variant' ? data.variants : []
 
-        const { variants, type } = this.getVariants(thumbnailPath)
-        // later store the product and variants
-        const tempProduct = {
-          ...this.product,
-          type,
-          variants
-        }
-        const { data } = await this.$axios.$post('/products', tempProduct)
-        this.$notify({ group: 'top', type: 'success', title: '¡Guardado exitosamente!', text: 'El producto ha sido creado' }, 2000)
-        setTimeout(() => {
-          this.$router.push(`/products/${data.product.id}`)
-        }, 500)
-      } catch (e) {
-        const status = e.response.status
-        this.errors = status === 422 ? e.response.data.errors : {}
-        const message = status === 422 ? 'Por favor, revisa los campos marcados' : 'Intentalo más tarde'
-        setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        }, 10)
-        this.$notify({ group: 'top', type: 'error', title: '¡Error!', text: message }, 2000)
-      } finally {
-        this.isLoadingStore = false
-      }
-    },
-    storeThumbnail () {
-      this.errors = {}
-      const formData = new FormData()
-      formData.append('thumbnail', this.product.thumbnail ? this.product.thumbnail : null)
-      formData.append('name', this.product.name)
-      formData.append('description', this.product.description)
-      formData.append('category_id', this.product.category_id)
-      formData.append('price', this.product.price ? this.product.price : '')
-      formData.append('status', this.product.status)
-      return formData
-    },
-    getVariants (thumbnailPath) {
-      let variants = []
-      const type = this.enabledVariants ? 'variant' : 'single'
+      const thumbnailPath = _.get(_.first(data.variants), ['thumbnail_path'], null)
+      this.productThumbnailImage = thumbnailPath ? `${this.baseUrl}/${thumbnailPath}?time=${Math.random()}` : null
 
-      if (this.enabledVariants) {
-        variants = JSON.parse(JSON.stringify(this.variantsArray))
-        variants.forEach((v) => {
-          v.thumbnail_path = thumbnailPath
-        })
-      } else {
-        // create first variant as a default product
-        const defaultNomenclature = _.find(this.nomenclatures, x => x.name === 'default')
-        const singleVariant = {
-          compare_at_price: this.product.compare_at_price,
-          nomenclature_value: null,
-          nomenclature_id: defaultNomenclature.id,
-          inventory_cost: this.product.inventory_cost,
-          price: this.product.price,
-          stock: this.product.stock,
-          sku: this.product.sku,
-          barcode: this.product.barcode,
-          thumbnail_path: thumbnailPath
-        }
-        variants.push(singleVariant)
+      this.product.id = data.id
+      this.product.name = data.name
+      this.product.type = data.type
+      this.product.description = data.description
+      this.product.status = data.status
+      this.product.category_id = data.category_id
+      this.product.stock = data.variants[0].stock
+      this.product.price = data.type === 'single' ? this.returnPrice(data.variants[0].price) : null
+      this.product.compare_at_price = data.type === 'single' ? this.returnPrice(data.variants[0].compare_at_price) : null
+      this.product.inventory_cost = data.type === 'single' ? this.returnPrice(data.variants[0].inventory_cost) : null
+    },
+    returnPrice (price) {
+      return price ? _.toNumber(price).toFixed(2) : null
+    },
+    addNewVariant () {
+      const emptyVariant = {
+        nomenclature_id: this.nomenclatures[0].id,
+        nomenclature_value: '',
+        price: null,
+        stock: 0
       }
-      return { variants, type }
+      this.variantsArray.push(emptyVariant)
+    },
+    removeVariantFromArray (index) {
+      if (this.variantsArray.length === 1) {
+        this.enabledVariants = false
+      }
+      this.variantsArray.splice(index, 1)
     }
   }
 }

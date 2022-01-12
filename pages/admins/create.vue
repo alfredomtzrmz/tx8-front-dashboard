@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-5xl mx-auto space-y-6">
+  <div class="max-w-5xl mx-auto space-y-5">
     <div class="flex">
       <div class="lg:space-x-4 flex flex-col lg:flex-row lg:items-center items-start text-gray-600 w-min px-0.5 nuxt-link-active space-y-2 lg:space-y-0">
         <base-button variant="transparent" size="icon" to="/admins">

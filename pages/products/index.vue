@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="mx-auto space-y-5 max-w-[100rem]">
     <div v-if="isLoaded" class="flex flex-col w-full space-y-6">
-      <div class="flex items-center justify-between">
+      <div class="flex items-start justify-between">
         <h1 class="text-xl font-semibold">
           Productos
         </h1>
@@ -15,16 +15,16 @@
             <div class="flex-col px-4 py-6 space-y-6 bg-white rounded-lg shadow sm:px-6">
               <div class="flex w-full space-x-2">
                 <div class="flex items-center w-full sm:max-w-xs lg:max-w-sm">
-                  <label for="searchExperiences" class="sr-only">Buscar</label>
+                  <label for="searchProducts" class="sr-only">Buscar</label>
                   <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
                     </div>
-                    <input id="searchExperiences"
+                    <input id="searchProducts"
                            v-model="searchProduct"
-                           name="searchExperiences"
+                           name="searchProducts"
                            class="pl-10 pr-3 base-input focus:placeholder-gray-500"
                            placeholder="Filtrar productos"
                            type="search"
@@ -41,7 +41,7 @@
                       </option>
                     </select>
                   </div>
-                  <TableFilters name="Estado" size="w-60">
+                  <TableFilters size="w-60">
                     <template #dropdown-body>
                       <div class="flex flex-col p-4 space-y-2">
                         <span class="text-sm font-medium text-gray-800">Estado:</span>
@@ -54,7 +54,8 @@
                               aria-describedby="product_active-description"
                               name="product_active"
                               type="checkbox"
-                              class="base-checkbox"
+                              class="cursor-pointer base-checkbox"
+                              @change="debounceSearchOrFilterProduct"
                             >
                           </div>
                           <div class="ml-3 text-sm">
@@ -71,7 +72,8 @@
                                 aria-describedby="product_draft-description"
                                 name="product_draft"
                                 type="checkbox"
-                                class="base-checkbox"
+                                class="cursor-pointer base-checkbox"
+                                @change="debounceSearchOrFilterProduct"
                               >
                             </div>
                             <div class="ml-3 text-sm">
@@ -91,7 +93,8 @@
                               aria-describedby="product_simple-description"
                               name="product_simple"
                               type="checkbox"
-                              class="base-checkbox"
+                              class="cursor-pointer base-checkbox"
+                              @change="debounceSearchOrFilterProduct"
                             >
                           </div>
                           <div class="ml-3 text-sm">
@@ -108,7 +111,8 @@
                                 aria-describedby="product_variant-description"
                                 name="product_variant"
                                 type="checkbox"
-                                class="base-checkbox"
+                                class="cursor-pointer base-checkbox"
+                                @change="debounceSearchOrFilterProduct"
                               >
                             </div>
                             <div class="ml-3 text-sm">
@@ -116,18 +120,6 @@
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="flex justify-between px-4 py-2 border-t">
-                        <base-button variant="white" size="mini" :disabled="isFetching" @onClick="clearFilters">
-                          <span>
-                            Limpiar
-                          </span>
-                        </base-button>
-                        <base-button variant="primary" size="mini" :disabled="isFetching || atLeastOneFilter" @onClick="debounceSearchOrFilterProduct()">
-                          <span>
-                            Aplicar
-                          </span>
-                        </base-button>
                       </div>
                     </template>
                   </TableFilters>
@@ -149,41 +141,49 @@
                       </svg>
                     </div>
                   </template>
-                  <table v-if="products.data.length >0 " class="w-full divide-y table-fixed divide-gray-50">
+                  <table v-if="products.data.length >0 " class="min-w-full divide-y divide-gray-50">
                     <thead class="border-b bg-gray-50">
                       <tr>
-                        <th class="px-6 py-3 lg:w-64 w-72">
+                        <th class="px-6 py-3">
                           <div class="flex items-center text-xs text-left">
                             <span class="font-medium tracking-wider text-gray-500 uppercase"> Producto </span>
                           </div>
                         </th>
-                        <th class="px-6 py-3 lg:w-24 w-28">
+                        <th class="px-6 py-3">
                           <div class="flex items-center text-xs text-left">
                             <span class="font-medium tracking-wider text-gray-500 uppercase"> Estado </span>
                           </div>
                         </th>
-                        <th class="w-64 px-6 py-3 xl:w-36">
+                        <th class="px-6 py-3">
                           <div class="flex items-center text-xs text-left">
                             <span class="font-medium tracking-wider text-gray-500 uppercase"> Inventario </span>
                           </div>
                         </th>
-                        <th class="px-6 py-3 w-36">
+                        <th class="px-6 py-3">
                           <div class="flex items-center text-xs text-left">
                             <span class="font-medium tracking-wider text-gray-500 uppercase"> Tipo </span>
+                          </div>
+                        </th>
+                        <th class="px-6 py-3">
+                          <div class="flex items-center text-xs text-left">
+                            <span class="font-medium tracking-wider text-gray-500 uppercase"> Creado el </span>
                           </div>
                         </th>
                       </tr>
                     </thead>
                     <tbody v-if="products.data.length > 0" class="bg-white divide-y divide-gray-200">
                       <tr v-for="(product,index) in products.data" :key="index" class="cursor-pointer hover:bg-gray-50" @click="redirectToEditProduct(product.id)">
-                        <td class="flex items-center px-6 py-4 text-left whitespace-nowrap">
-                          <div class="flex items-center w-full space-x-2">
+                        <td class="flex items-center px-6 py-4 text-left whitespace-normal sm:whitespace-nowrap">
+                          <div class="flex items-center w-full space-x-4">
                             <div class="flex flex-col items-center justify-center flex-shrink-0 w-16 h-16 p-1 text-center border border-gray-300 rounded-md">
                               <div class="flex items-center justify-center w-full h-full">
-                                <img :src="product.variants[0].thumbnail_path" :alt="product.name" class="object-cover object-center h-full">
+                                <LoadedImage v-if="returnProductThumbnail(product.variants)" :src="returnProductThumbnail(product.variants)" :alt="product.name" classes="object-cover object-center h-full" />
+                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
                               </div>
                             </div>
-                            <nuxt-link :to="`/products/${product.id}`" class="text-sm font-medium text-gray-900 rounded-md hover:underline line-clamp-2 focus:outline-none focus:ring-primary-500 focus:ring-2">
+                            <nuxt-link :to="`/products/${product.id}`" class="text-sm font-medium text-gray-900 rounded-md hover:underline line-clamp-3 focus:outline-none focus:ring-primary-500 focus:ring-2">
                               {{ product.name }}
                             </nuxt-link>
                           </div>
@@ -194,7 +194,7 @@
                           </div>
                         </td>
                         <td class="px-6 py-4 text-sm text-left whitespace-nowrap">
-                          <span class="inline-flex items-center justify-center p-1 rounded-sm bg-amber-200">
+                          <span class="inline-flex items-center justify-center" :class="{'p-1 rounded-sm bg-amber-200': returnVariantsQuantity(product.variants) <= 10}">
                             {{ returnVariantsQuantity(product.variants) }}
                           </span>
                           <span v-if="product.variants.length >1" class="">
@@ -206,6 +206,11 @@
                         </td>
                         <td class="px-6 py-4 text-sm text-left whitespace-nowrap">
                           <BadgeType :type="product.type" />
+                        </td>
+                        <td class="px-6 py-4 text-sm text-left whitespace-nowrap">
+                          <span class="inline-flex items-center justify-center">
+                            {{ parseDate(product.created_at) }}
+                          </span>
                         </td>
                       </tr>
                     </tbody>
@@ -263,6 +268,9 @@
 
 <script>
 import * as _ from 'lodash'
+import * as dayjs from 'dayjs'
+import 'dayjs/locale/es'
+
 export default {
   name: 'ProductsIndex',
   layout: 'default',
@@ -276,6 +284,7 @@ export default {
       typeProductFilters: [],
       itemsPerPage: 10,
       itemsPerPageData: [10, 15, 25, 50, 100],
+      baseUrl: this.$config.baseImageUrl,
       products: {
         meta: {
           current_page: 1
@@ -287,11 +296,6 @@ export default {
   async fetch () {
     await this.fetchProducts()
     this.isLoaded = true
-  },
-  computed: {
-    atLeastOneFilter () {
-      return this.stateProductFilters.length <= 0 && this.typeProductFilters.length <= 0
-    }
   },
   watch: {
     'products.meta.current_page' () {
@@ -310,7 +314,6 @@ export default {
             limit: this.itemsPerPage,
             page: this.products.meta.current_page
           }
-
         })
         this.alreadyHasData = this.alreadyHasData !== 0 ? this.alreadyHasData : this.products.data.length
       } catch (e) {
@@ -326,6 +329,10 @@ export default {
       } finally {
         this.isFetching = false
       }
+    },
+    returnProductThumbnail (variants) {
+      const thumbnailPath = _.get(_.first(variants), ['thumbnail_path'], null)
+      return thumbnailPath ? `${this.baseUrl}/${thumbnailPath}?time=${Math.random()}` : null
     },
     redirectToEditProduct (id) {
       this.$router.push(`/products/${id}`)
@@ -350,6 +357,12 @@ export default {
     searchOrSelectProduct () {
       this.products.meta.current_page = 1
       this.fetchProducts()
+    },
+    parseDate (date) {
+      return dayjs(date).locale('es').format('DD MMMM YYYY')
+    },
+    onImgLoad () {
+      this.isLoaded = true
     }
   }
 }
