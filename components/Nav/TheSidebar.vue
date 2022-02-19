@@ -69,9 +69,7 @@
           TX8 Admin
         </span>
       </header>
-      <div class="flex flex-col flex-grow">
-        <TheSidebarItems />
-      </div>
+      <TheSidebarItems />
     </aside>
   </div>
 </template>
