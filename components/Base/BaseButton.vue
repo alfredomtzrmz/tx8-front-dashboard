@@ -1,9 +1,9 @@
 <template>
   <component
     :is="buttonType"
-    class="base-button"
-    :to="to"
     :class="getClasses"
+    :to="to"
+    class="base-button"
     v-bind="$attrs"
     @click="$emit('onClick')"
   >
@@ -17,7 +17,7 @@
           stroke="currentColor"
           stroke-width="4"
         />
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+        <path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor" />
       </svg>
     </template>
     <template v-else>
@@ -44,7 +44,7 @@ export default {
     size: {
       type: String,
       required: false,
-      default: 'sm',
+      default: 'md',
       validator (value) {
         return AVAILABLE_SIZES.includes(value)
       }

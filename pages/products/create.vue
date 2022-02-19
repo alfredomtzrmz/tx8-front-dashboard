@@ -224,7 +224,7 @@
                 </div>
               </div>
             </div>
-            <!-- product image -->
+            <!-- Product image -->
             <div class="px-4 py-5 space-y-6 bg-white rounded-md shadow sm:px-5">
               <h2 class="text-base font-semibold text-gray-900">
                 Elementos multimedia
@@ -300,7 +300,14 @@
               <!-- Product Category-->
               <div class="flex flex-col col-span-6">
                 <label for="product_category" class="base-label">Categoría</label>
-                <v-select id="product_category" v-model="product.category_id" :class="{'vs__dropdown-toggle--error': errors.category_id}" class="mt-1" placeholder="Selecciona una categoría" :clearable="false" label="name" :options="categories" :searchable="true" :reduce="category => category.id">
+                <v-select
+                  id="product_category"
+                  v-model="product.category_id"
+                  :class="{'vs__dropdown-toggle--error': errors.category_id}"
+                  class="mt-1" placeholder="Selecciona una categoría"
+                  :clearable="false" label="name" :options="categories"
+                  :searchable="true" :reduce="category => category.id"
+                >
                   <template #open-indicator="{ attributes }">
                     <span v-bind="attributes">
                       <svg class="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -541,7 +548,7 @@ export default {
         }
 
         const { variants, type } = this.getVariants(thumbnailPath)
-        // later store the product and variants
+        // later store the Product and variants
         const tempProduct = {
           ...this.product,
           type,
@@ -585,7 +592,7 @@ export default {
           v.thumbnail_path = thumbnailPath
         })
       } else {
-        // create first variant as a default product
+        // create first variant as a default Product
         const defaultNomenclature = _.find(this.nomenclatures, x => x.name === 'default')
         const singleVariant = {
           compare_at_price: this.product.compare_at_price,

@@ -1,5 +1,3 @@
-const colors = require('tailwindcss/colors')
-
 module.exports = {
   content: [
     'components/**/*.{vue,js}',
@@ -10,6 +8,7 @@ module.exports = {
     'assets/safelist.txt',
     '/multiselect/'
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -24,8 +23,7 @@ module.exports = {
           700: '#735816',
           800: '#564211',
           900: '#392C0B'
-        },
-        amber: colors.amber
+        }
       },
       screens: {
         xs: '425px'
@@ -35,7 +33,8 @@ module.exports = {
       }
     },
     fontFamily: {
-      inter: ['"Inter"']
+      inter: ['Inter'],
+      dm: ['DM Sans']
     }
   },
   plugins: [

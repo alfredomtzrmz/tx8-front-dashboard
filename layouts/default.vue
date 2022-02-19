@@ -1,10 +1,14 @@
 <template>
   <div class="flex flex-col w-full min-h-screen">
-    <the-navbar />
-    <the-sidebar />
-    <main class="relative px-6 py-6 overflow-y-auto sm:px-8 lg:ml-60">
-      <nuxt />
-    </main>
+    <TheSidebar />
+    <div class="lg:ml-80">
+      <TheNavbar />
+      <main class="overflow-y-auto relative">
+        <div class="p-4 mx-auto w-full max-w-7xl md:p-6 lg:p-8">
+          <nuxt />
+        </div>
+      </main>
+    </div>
     <BaseNotification />
     <BaseAlert />
   </div>

@@ -8,18 +8,29 @@ export default {
   head: {
     title: 'TX8 - Dashboard',
     bodyAttrs: {
-      class: 'font-inter bg-gray-50 antialiased overflow-y-auto'
+      class: 'font-dm bg-gray-100 transition-colors duration-100 dark:bg-gray-900 antialiased overflow-y-auto'
     },
     htmlAttrs: {
       lang: 'es-MX'
     },
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1'
+      },
+      {
+        hid: 'description',
+        name: 'description',
+        content: ''
+      }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.ico'
+      }
     ]
   },
 
@@ -34,7 +45,10 @@ export default {
   loading: false,
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/echo', mode: 'client' },
+    {
+      src: '~/plugins/echo',
+      mode: 'client'
+    },
     { src: '~/plugins/vt-notifications' },
     { src: '~/plugins/v-maska' },
     { src: '~/plugins/v-tippy' },
@@ -44,25 +58,37 @@ export default {
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
-    { path: '~/components', pathPrefix: false }
+    {
+      path: '~/components',
+      pathPrefix: false
+    }
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    // https://color-mode.nuxtjs.org/
+    '@nuxtjs/color-mode',
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://google-fonts.nuxtjs.org/
     '@nuxtjs/google-fonts'
   ],
+  colorMode: {
+    classSuffix: ''
+  },
   googleFonts: {
     families: {
       Inter: {
+        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      },
+      'DM+Sans': {
         wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
       }
     },
     display: 'swap',
     download: true,
-    stylePath: 'scss/base/_fonts.scss'
+    overwriting: false,
+    stylePath: 'scss/Base/_fonts.scss'
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -76,7 +102,8 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: process.env.BASE_URL
+    baseURL: process.env.BASE_URL,
+    withCredentials: true
   },
 
   auth: {
@@ -91,10 +118,22 @@ export default {
         provider: 'laravelJWT',
         url: process.env.BASE_URL,
         endpoints: {
-          login: { url: '/auth/login', method: 'post' },
-          logout: { url: '/auth/logout', method: 'post' },
-          user: { url: '/auth/me', method: 'get' },
-          refresh: { url: '/auth/refresh', method: 'post' }
+          login: {
+            url: '/auth/login',
+            method: 'post'
+          },
+          logout: {
+            url: '/auth/logout',
+            method: 'post'
+          },
+          user: {
+            url: '/auth/me',
+            method: 'get'
+          },
+          refresh: {
+            url: '/auth/refresh',
+            method: 'post'
+          }
         },
         user: {
           property: 'data'

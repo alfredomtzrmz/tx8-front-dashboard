@@ -1,11 +1,11 @@
 <template>
-  <div class="max-w-5xl mx-auto space-y-5">
+  <div class="w-full h-full space-y-5">
     <template v-if="isLoaded">
       <div class="flex">
         <div class="lg:space-x-4 flex flex-col lg:flex-row lg:items-center items-start text-gray-600 px-0.5 space-y-2 lg:space-y-0">
-          <base-button variant="transparent" size="icon" to="/products">
-            <svg class="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <base-button size="icon" to="/products" variant="transparent">
+            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
             </svg>
           </base-button>
           <span class="text-xl font-medium text-gray-900">
@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <form enctype="multipart/form-data" class="flex flex-col w-full space-y-6" novalidate @submit.prevent="storeProduct">
+      <form class="flex flex-col w-full space-y-6" enctype="multipart/form-data" novalidate @submit.prevent="storeProduct">
         <div class="grid grid-cols-1 gap-6 md:grid-flow-col-dense md:grid-cols-3">
           <!-- left/up content -->
           <div class="space-y-6 md:col-start-1 md:col-span-2">
@@ -22,9 +22,9 @@
             <div class="px-4 py-5 bg-white rounded-md shadow sm:px-5">
               <div class="grid grid-cols-6 gap-6">
                 <div class="relative col-span-6">
-                  <label for="product_name" class="base-label">Nombre<span class="font-bold">*</span></label>
+                  <label class="base-label" for="product_name">Nombre<span class="font-bold">*</span></label>
                   <div class="relative mt-1">
-                    <input id="product_name" v-model="product.name" :class="{'base-input--error': errors.name}" type="text" name="product_name" autocomplete="product_name" class="base-input">
+                    <input id="product_name" v-model="product.name" :class="{'base-input--error': errors.name}" autocomplete="product_name" class="base-input" name="product_name" type="text">
                   </div>
                   <div v-if="errors.name" class="flex flex-col">
                     <span v-for="error in errors.name" :key="error.id" class="mt-1 text-sm text-red-500">
@@ -33,9 +33,9 @@
                   </div>
                 </div>
                 <div class="col-span-6">
-                  <label for="product_description" class="base-label">Descripción<span class="font-bold">*</span></label>
+                  <label class="base-label" for="product_description">Descripción<span class="font-bold">*</span></label>
                   <div class="relative mt-1">
-                    <textarea id="product_description" v-model="product.description" :class="{'base-input--error': errors.description}" name="product_description" class="mt-1 base-input" cols="30" rows="4" />
+                    <textarea id="product_description" v-model="product.description" :class="{'base-input--error': errors.description}" class="mt-1 base-input" cols="30" name="product_description" rows="4" />
                   </div>
                   <div v-if="errors.description" class="flex flex-col">
                     <span v-for="error in errors.description" :key="error.id" class="mt-1 text-sm text-red-500">
@@ -48,20 +48,20 @@
             <!-- Prices -->
             <div class="py-5 space-y-6 bg-white rounded-md shadow">
               <h2 class="px-4 text-base font-semibold text-gray-900 sm:px-5">
-                Variantes y precio
+                Variantes <span v-if="!hasVariants">y precio</span>
               </h2>
               <div v-show="!enabledVariants" class="flex flex-col space-y-6">
                 <div class="pb-6 border-b">
                   <div class="grid grid-cols-6 gap-6 px-4 sm:px-5">
                     <div class="col-span-6 sm:col-span-3">
-                      <label for="price" class="base-label">Precio</label>
+                      <label class="base-label" for="price">Precio</label>
                       <div class="relative mt-1">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                           <span class="text-gray-500 sm:text-sm">
                             $
                           </span>
                         </div>
-                        <input id="price" v-model="product.price" v-maska="'#*.##'" :maxlength="7" type="text" name="price" class="pl-7 base-input" :class="{'base-input--error': errors.price}" placeholder="0.00" aria-describedby="price">
+                        <input id="price" v-model="product.price" v-maska="'#*.##'" :class="{'base-input--error': errors.price}" :maxlength="7" aria-describedby="price" class="pl-7 base-input" name="price" placeholder="0.00" type="text">
                       </div>
                       <div v-if="errors.price" class="flex flex-col">
                         <span v-for="error in errors.price" :key="error.id" class="mt-1 text-sm text-red-500">
@@ -71,14 +71,14 @@
                     </div>
                     <div class="col-span-6 sm:col-span-3">
                       <div class="flex items-center space-x-2">
-                        <label for="compare_at_price" class="base-label">Precio de comparación</label>
+                        <label class="base-label" for="compare_at_price">Precio de comparación</label>
                         <button
                           v-tippy="{appendTo: 'parent', maxWidth:200, theme: 'light', placement:'bottom', animation : 'scale'}"
-                          content="Para mostrar un precio rebajado, mueve el precio original del producto al precio de comparación. Introduce un valor menor para el precio"
-                          class="relative focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50" type="button"
+                          class="relative focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50"
+                          content="Para mostrar un precio rebajado, mueve el precio original del producto al precio de comparación. Introduce un valor menor para el precio" type="button"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                          <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" fill-rule="evenodd" />
                           </svg>
                         </button>
                       </div>
@@ -88,33 +88,33 @@
                             $
                           </span>
                         </div>
-                        <input id="compare_at_price" v-model="product.compare_at_price" v-maska="'#*.##'" :maxlength="7" type="text" name="compare_at_price" class="pl-7 base-input" placeholder="0.00" aria-describedby="compare_at_price">
+                        <input id="compare_at_price" v-model="product.compare_at_price" v-maska="'#*.##'" :maxlength="7" aria-describedby="compare_at_price" class="pl-7 base-input" name="compare_at_price" placeholder="0.00" type="text">
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="grid grid-cols-6 gap-6 px-4 pb-6 border-b sm:px-5">
                   <div class="col-span-6 sm:col-span-3">
-                    <label for="inventory_cost" class="base-label">Costo por artículo</label>
+                    <label class="base-label" for="inventory_cost">Costo por artículo</label>
                     <div class="relative mt-1 rounded-md shadow-sm">
                       <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <span class="text-gray-500 sm:text-sm">
                           $
                         </span>
                       </div>
-                      <input id="inventory_cost" v-model="product.inventory_cost" v-maska="'#*.##'" :maxlength="7" type="text" name="inventory_cost" class="pl-7 base-input" placeholder="0.00" aria-describedby="inventory_cost">
+                      <input id="inventory_cost" v-model="product.inventory_cost" v-maska="'#*.##'" :maxlength="7" aria-describedby="inventory_cost" class="pl-7 base-input" name="inventory_cost" placeholder="0.00" type="text">
                     </div>
                   </div>
                   <div class="col-span-6 sm:col-span-3">
                     <div class="grid grid-cols-2">
                       <div class="col-span-1">
-                        <label for="margin_price" class="base-label">Margen</label>
+                        <label class="base-label" for="margin_price">Margen</label>
                         <span id="margin_price" class="text-sm">
                           {{ marginPrice }}
                         </span>
                       </div>
                       <div class="col-span-1">
-                        <label for="gain_price" class="base-label">Ganancia</label>
+                        <label class="base-label" for="gain_price">Ganancia</label>
                         <span id="gain_price" class="text-sm">
                           {{ gainPrice }}
                         </span>
@@ -123,51 +123,46 @@
                   </div>
                 </div>
               </div>
-              <div class="grid grid-cols-6 gap-6 px-4 sm:px-5">
+              <div v-if="!hasVariants" class="grid grid-cols-6 gap-6 px-4 sm:px-5">
                 <div class="col-span-6">
                   <div class="flex items-start">
                     <div class="flex items-center h-5">
-                      <input id="variants" v-model="enabledVariants" name="variants" type="checkbox" class="cursor-pointer base-checkbox">
+                      <input id="variants" v-model="enabledVariants" class="cursor-pointer base-checkbox" name="variants" type="checkbox">
                     </div>
                     <div class="ml-3 text-sm">
-                      <label for="variants" class="font-medium text-gray-700 cursor-pointer">
+                      <label class="font-medium text-gray-700 cursor-pointer" for="variants">
                         Este producto tiene múltiples presentaciones</label>
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-show="enabledVariants" class="pt-5 space-y-6 overflow-hidden border-t ">
-                <div class="flex items-center justify-between w-full px-4 sm:px-5">
-                  <span class="text-sm font-medium uppercase">
-                    Vista previa
-                  </span>
-                </div>
+              <div v-show="enabledVariants" class="space-y-6 overflow-hidden">
                 <div class="w-full overflow-x-auto border-b rounded">
                   <table class="w-full divide-y divide-gray-200 table-fixed">
                     <thead class="">
                       <tr>
-                        <th scope="col" class="w-40 px-4 py-4 sm:px-5">
+                        <th class="w-40 px-4 py-4 sm:px-5" scope="col">
                           <div class="flex items-center text-xs text-left">
                             <span class="text-xs font-semibold tracking-wider text-left uppercase ">
                               Variante*
                             </span>
                           </div>
                         </th>
-                        <th scope="col" class="px-4 py-4 sm:px-5 w-36">
+                        <th class="px-4 py-4 sm:px-5 w-36" scope="col">
                           <div class="flex items-center text-xs text-left">
                             <span class="text-xs font-semibold tracking-wider text-left uppercase ">
                               Precio*
                             </span>
                           </div>
                         </th>
-                        <th scope="col" class="w-32 px-4 py-4 sm:px-5">
+                        <th class="w-32 px-4 py-4 sm:px-5" scope="col">
                           <div class="flex items-center text-xs text-left">
                             <span class="text-xs font-semibold tracking-wider text-left uppercase ">
                               Cantidad
                             </span>
                           </div>
                         </th>
-                        <th scope="col" class="relative w-40 px-4 py-4 xl:w-36 sm:px-5">
+                        <th class="relative w-40 px-4 py-4 xl:w-36 sm:px-5" scope="col">
                           <span class="sr-only">Acción</span>
                         </th>
                       </tr>
@@ -176,7 +171,7 @@
                       <tr v-for="(variant,index) in variantsArray" :key="index" class="even:bg-gray-50 hover:bg-gray-100">
                         <td class="flex items-center px-4 py-4 text-left truncate sm:px-5">
                           <div class="relative">
-                            <input :id="`nomenclature_value-${index}`" v-model="variantsArray[index].nomenclature_value" v-maska="'#*.##'" :maxlength="7" type="text" :name="`nomenclature_value-${index}`" class="pl-2 pr-16 base-input" placeholder="0">
+                            <input :id="`nomenclature_value-${index}`" v-model="variantsArray[index].nomenclature_value" v-maska="'#*.##'" :maxlength="7" :name="`nomenclature_value-${index}`" class="pl-2 pr-16 base-input" placeholder="0" type="text">
                             <div class="absolute inset-y-0 right-0 z-10 flex items-center">
                               <label :for="`nomenclature_value-${index}`" class="sr-only">Nomenclature</label>
                               <select :id="`nomenclature_value-${index}`" v-model="variantsArray[index].nomenclature_id" :name="`nomenclature_value-${index}`" class="rounded-md cursor-pointer pr-7 custom-select">
@@ -196,8 +191,8 @@
                                 $
                               </span>
                             </div>
-                            <label for="nomenclature_price" class="sr-only">Precio</label>
-                            <input id="nomenclature_price" v-model="variantsArray[index].price" v-maska="'#*.##'" :maxlength="7" type="text" name="nomenclature_price" class="pl-7 base-input" placeholder="0.00" aria-describedby="nomenclature_price">
+                            <label class="sr-only" for="nomenclature_price">Precio</label>
+                            <input id="nomenclature_price" v-model="variantsArray[index].price" v-maska="'#*.##'" :maxlength="7" aria-describedby="nomenclature_price" class="pl-7 base-input" name="nomenclature_price" placeholder="0.00" type="text">
                           </div>
                         </td>
                         <td class="px-4 py-4 text-left truncate sm:px-5">
@@ -207,12 +202,12 @@
                         <td class="px-4 py-4 text-left truncate sm:px-5">
                           <div class="flex items-center">
                             <span class="relative z-0 inline-flex rounded-md shadow-sm">
-                              <button type="button" class="relative inline-flex items-center h-10 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md focus:z-10 hover:bg-gray-50 focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50" @click="removeVariantFromArray(index)">
-                                <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              <button class="relative inline-flex items-center h-10 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md focus:z-10 hover:bg-gray-50 focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50" type="button" @click="removeVariantFromArray(index)">
+                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                                 </svg>
                               </button>
-                              <nuxt-link :to="`/products/${product.id}/variants/43424`" type="button" class="relative inline-flex items-center h-10 px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md focus:z-10 hover:bg-gray-50 focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50">
+                              <nuxt-link :to="`/products/${product.id}/variants/43424`" class="relative inline-flex items-center h-10 px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md focus:z-10 hover:bg-gray-50 focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50" type="button">
                                 Editar
                               </nuxt-link>
                             </span>
@@ -223,13 +218,13 @@
                   </table>
                 </div>
                 <div class="px-4 sm:px-5">
-                  <base-button variant="white" type="button" @onClick="addNewVariant()">
+                  <base-button type="button" variant="white" @onClick="addNewVariant()">
                     Agregar variante
                   </base-button>
                 </div>
               </div>
             </div>
-            <!-- product image -->
+            <!-- Product image -->
             <div class="px-4 py-5 space-y-6 bg-white rounded-md shadow sm:px-5">
               <div class="flex items-center space-x-2">
                 <h2 class="text-base font-semibold text-gray-900">
@@ -237,17 +232,17 @@
                 </h2>
                 <button
                   v-tippy="{appendTo: 'parent', maxWidth:200, theme: 'light', placement:'bottom', animation : 'scale'}"
-                  content="Vas a cambiar la imagen a todas tus variantes, si deseas cambiar la imagen de una variante, edita la variante."
-                  class="relative focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50" type="button"
+                  class="relative focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50"
+                  content="Vas a cambiar la imagen a todas tus variantes, si deseas cambiar la imagen de una variante, edita la variante." type="button"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                  <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" fill-rule="evenodd" />
                   </svg>
                 </button>
               </div>
               <div>
                 <label class="base-label">Imagen del producto</label>
-                <div class="flex justify-center w-full px-6 pt-5 pb-6 mt-1 border-2 border-dashed rounded-md h-72 sm:h-80" :class="{'border-primary-500' : draggingProductPicture,'border-gray-300' : !draggingProductPicture,'border-red-500' : errors.thumbnail}" @dragover.prevent="draggingProductPicture=true" @dragleave="draggingProductPicture=false" @dragend="draggingProductPicture=false" @drop="onDropProductThumbnail($event)">
+                <div :class="{'border-primary-500' : draggingProductPicture,'border-gray-300' : !draggingProductPicture,'border-red-500' : errors.thumbnail}" class="flex justify-center w-full px-6 pt-5 pb-6 mt-1 border-2 border-dashed rounded-md h-72 sm:h-80" @dragend="draggingProductPicture=false" @dragleave="draggingProductPicture=false" @drop="onDropProductThumbnail($event)" @dragover.prevent="draggingProductPicture=true">
                   <div class="flex flex-col items-center justify-center h-full space-y-1 text-center">
                     <template v-if="productThumbnailImage">
                       <div class="relative w-full h-full">
@@ -257,18 +252,18 @@
                       </div>
                     </template>
                     <template v-else>
-                      <svg class="w-24 h-24 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <svg aria-hidden="true" class="w-24 h-24 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                       </svg>
                     </template>
                     <div class="flex flex-col items-center justify-center space-y-2 text-sm text-gray-600">
-                      <button v-if="productThumbnailImage" type="button" class="flex items-center justify-center w-20 text-sm text-red-400 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 hover:bg-gray-50" @click="removeProductThumbnail()">
+                      <button v-if="productThumbnailImage" class="flex items-center justify-center w-20 text-sm text-red-400 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 hover:bg-gray-50" type="button" @click="removeProductThumbnail()">
                         Remover
                       </button>
                       <div class="flex">
-                        <label for="thumbnailImageUpload" class="relative font-medium bg-white rounded-md cursor-pointer text-primary-600 hover:text-primary-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500">
+                        <label class="relative font-medium bg-white rounded-md cursor-pointer text-primary-600 hover:text-primary-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500" for="thumbnailImageUpload">
                           <span>Sube una imagen</span>
-                          <input id="thumbnailImageUpload" accept="image/*" name="thumbnailImageUpload" type="file" class="sr-only" @change="onChangeProductThumbnail($event)">
+                          <input id="thumbnailImageUpload" accept="image/*" class="sr-only" name="thumbnailImageUpload" type="file" @change="onChangeProductThumbnail($event)">
                         </label>
                         <p class="pl-1">
                           o arrastra y suelta
@@ -296,7 +291,7 @@
               </h2>
               <!-- Product Status-->
               <div class="flex flex-col mt-4 space-y-2">
-                <select id="status" v-model="product.status" name="status" class="base-input">
+                <select id="status" v-model="product.status" class="base-input" name="status">
                   <option selected value="0">
                     Borrador
                   </option>
@@ -315,12 +310,12 @@
               </h2>
               <!-- Product Status-->
               <div class="flex flex-col col-span-6">
-                <label for="product_category" class="base-label">Categoría</label>
-                <v-select id="product_category" v-model="product.category_id" :class="{'vs__dropdown-toggle--error': errors.category_id}" class="mt-1" placeholder="Selecciona una categoría" :clearable="false" label="name" :options="categories" :searchable="true" :reduce="category => category.id">
+                <label class="base-label" for="product_category">Categoría</label>
+                <v-select id="product_category" v-model="product.category_id" :class="{'vs__dropdown-toggle--error': errors.category_id}" :clearable="false" :options="categories" :reduce="category => category.id" :searchable="true" class="mt-1" label="name" placeholder="Selecciona una categoría">
                   <template #open-indicator="{ attributes }">
                     <span v-bind="attributes">
-                      <svg class="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                       </svg>
                     </span>
                   </template>
@@ -334,28 +329,28 @@
               <template v-if="!enabledVariants">
                 <!-- Product Stock-->
                 <div class="flex flex-col col-span-6">
-                  <label for="product_stock" class="base-label">Stock</label>
+                  <label class="base-label" for="product_stock">Stock</label>
                   <VariantQuantity id="product_stock" v-model="product.stock" class="mt-1" name="product_stock" />
                 </div>
                 <!-- Product SKU-->
                 <div class="flex flex-col col-span-6">
-                  <label for="sku" class="base-label">SKU (código de artículo)</label>
-                  <input id="sku" v-model="product.sku" v-maska="'X*'" :maxlength="15" type="text" name="sku" class="mt-1 base-input" aria-describedby="sku">
+                  <label class="base-label" for="sku">SKU (código de artículo)</label>
+                  <input id="sku" v-model="product.sku" v-maska="'X*'" :maxlength="15" aria-describedby="sku" class="mt-1 base-input" name="sku" type="text">
                 </div>
                 <!-- Product ISBN-->
                 <div class="flex flex-col col-span-6">
-                  <label for="barcode" class="base-label">Código de barras (ISBN, etc.)</label>
-                  <input id="barcode" v-model="product.barcode" v-maska="'X*'" type="text" :maxlength="25" name="barcode" class="mt-1 base-input" aria-describedby="barcode">
+                  <label class="base-label" for="barcode">Código de barras (ISBN, etc.)</label>
+                  <input id="barcode" v-model="product.barcode" v-maska="'X*'" :maxlength="25" aria-describedby="barcode" class="mt-1 base-input" name="barcode" type="text">
                 </div>
               </template>
             </div>
           </div>
         </div>
         <div class="flex items-center justify-end py-3 space-x-3 border-t">
-          <base-button :disabled="isLoadingEdit" to="/products" variant="white" class="w-32">
+          <base-button :disabled="isLoadingEdit" class="w-32" to="/products" variant="white">
             Cancelar
           </base-button>
-          <base-button :disabled="isLoadingEdit || !isFormComplete" type="submit" :is-loading="isLoadingEdit" class="w-32">
+          <base-button :disabled="isLoadingEdit || !isFormComplete" :is-loading="isLoadingEdit" class="w-32" type="submit">
             Guardar
           </base-button>
         </div>
@@ -399,15 +394,14 @@ export default {
       if (!this.product.price || !this.product.inventory_cost) {
         return '-'
       }
-      const gain = parseFloat(
-        ((this.product.price - this.product.inventory_cost) / this.product.price) * 100).toFixed(1)
+      const gain = (((this.product.price - this.product.inventory_cost) / this.product.price) * 100).toFixed(1)
       return `${gain}%`
     },
     gainPrice () {
       if (!this.product.price || !this.product.inventory_cost) {
         return '-'
       }
-      const minus = parseFloat(this.product.price - this.product.inventory_cost).toFixed(1)
+      const minus = (this.product.price - this.product.inventory_cost).toFixed(1)
       return `$${minus}`
     },
     variantsCompleted () {
@@ -415,6 +409,9 @@ export default {
     },
     isFormComplete () {
       return !((!this.product.name || !this.product.description || !this.product.category_id) || !(this.enabledVariants ? this.variantsCompleted : true))
+    },
+    hasVariants () {
+      return this.variantsArray.length >= 1
     }
   },
   watch: {

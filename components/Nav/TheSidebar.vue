@@ -12,7 +12,7 @@
             leave-class="opacity-100"
             leave-to-class="opacity-0"
           >
-            <div v-show="getIsSidebarOpen" class="fixed inset-0" aria-hidden="true" @click="setSidebarOpen">
+            <div v-show="getIsSidebarOpen" aria-hidden="true" class="fixed inset-0" @click="setSidebarOpen">
               <div class="absolute inset-0 bg-gray-600 opacity-75" />
             </div>
           </transition>
@@ -27,45 +27,48 @@
             <div v-show="getIsSidebarOpen" class="relative flex flex-col flex-1 w-full max-w-xs bg-gray-800">
               <div class="absolute top-0 right-0 pt-2 -mr-12">
                 <transition
-                  enter-class="opacity-0"
                   enter-active-class="transition-opacity ease-in delay-200"
+                  enter-class="opacity-0"
                   enter-to-class="opacity-100"
                 >
                   <button v-show="getIsSidebarOpen" class="flex items-center justify-center w-10 h-10 ml-1 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="setSidebarOpen">
                     <span class="sr-only">Close sidebar</span>
                     <svg
-                      class="w-6 h-6 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
                       aria-hidden="true"
+                      class="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                     </svg>
                   </button>
                 </transition>
               </div>
-              <aside class="flex flex-col flex-grow py-2 overflow-y-auto bg-white border-r border-gray-200">
-                <!-- <div class="flex items-center flex-shrink-0 px-4">
-                  <img class="w-auto h-8" src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg" alt="Workflow">
-                </div> -->
-                <div class="flex items-center flex-shrink-0 px-4">
-                  <img class="w-auto h-10" src="/images/logo.svg" alt="Workflow">
-                </div>
-                <the-sidebar-items-mobile />
+              <aside class="flex flex-col flex-grow overflow-y-auto bg-white border-r border-gray-200">
+                <header class="border-b h-16 shrink-0 px-6 flex items-center dark:bg-gray-800 dark:border-gray-700">
+                  <span class="text-xl font-bold tracking-tight dark:text-white">
+                    TX8 Admin
+                  </span>
+                </header>
+                <TheSidebarItemsMobile />
               </aside>
             </div>
           </transition>
-          <div class="flex-shrink-0 w-14" aria-hidden="true">
+          <div aria-hidden="true" class="flex-shrink-0 w-14">
             <!-- Dummy element to force sidebar to shrink to fit close icon -->
           </div>
         </div>
       </transition>
     </div>
     <!-- Static sidebar for desktop -->
-
-    <aside class="fixed z-10 hidden h-full bg-white border-r border-gray-200 w-60 lg:flex-1 lg:flex">
+    <aside class="fixed z-10 hidden h-full bg-white dark:bg-gray-800 dark:border-gray-700 flex flex-col border-r border-gray-200 w-80 lg:flex-1 lg:flex">
+      <header class="border-b h-16 shrink-0 px-6 flex items-center dark:bg-gray-800 dark:border-gray-700">
+        <span class="text-xl font-bold tracking-tight dark:text-white">
+          TX8 Admin
+        </span>
+      </header>
       <div class="flex flex-col flex-grow">
         <TheSidebarItems />
       </div>
@@ -75,6 +78,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'TheSidebar',
   computed: {
