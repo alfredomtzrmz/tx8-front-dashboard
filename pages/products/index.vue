@@ -47,7 +47,7 @@
                 <TableFilters size="w-72">
                   <template #dropdown-body>
                     <div class="flex flex-col p-4 space-y-2">
-                      <span class="text-sm font-medium text-gray-800">Estado:</span>
+                      <span class="text-sm font-medium dark:text-gray-100 text-gray-900">Estado:</span>
                       <div class="flex relative items-start cursor-pointer">
                         <div class="flex items-center h-5">
                           <input
@@ -62,7 +62,7 @@
                           >
                         </div>
                         <div class="ml-3 text-sm">
-                          <label class="font-medium text-gray-600 cursor-pointer" for="product_active">Activo</label>
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_active">Activo</label>
                         </div>
                       </div>
                       <div>
@@ -80,13 +80,13 @@
                             >
                           </div>
                           <div class="ml-3 text-sm">
-                            <label class="font-medium text-gray-600 cursor-pointer" for="product_draft">Borrador</label>
+                            <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_draft">Borrador</label>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="flex flex-col px-4 pb-4 space-y-2">
-                      <span class="text-sm font-medium text-gray-800">Tipo:</span>
+                      <span class="text-sm font-medium dark:text-gray-100 text-gray-900">Tipo:</span>
                       <div class="flex relative items-start cursor-pointer">
                         <div class="flex items-center h-5">
                           <input
@@ -101,7 +101,7 @@
                           >
                         </div>
                         <div class="ml-3 text-sm">
-                          <label class="font-medium text-gray-600 cursor-pointer" for="product_simple">Simple</label>
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_simple">Simple</label>
                         </div>
                       </div>
                       <div>
@@ -119,7 +119,7 @@
                             >
                           </div>
                           <div class="ml-3 text-sm">
-                            <label class="font-medium text-gray-600 cursor-pointer" for="product_variant">Variantes</label>
+                            <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_variant">Variantes</label>
                           </div>
                         </div>
                       </div>
