@@ -1,239 +1,256 @@
 <template>
   <div class="space-y-5 w-full h-full">
-    <div v-if="isLoaded" class="flex flex-col w-full space-y-6">
-      <div class="flex items-start justify-between">
-        <h1 class="text-xl font-semibold">
+    <div v-if="isLoaded" class="flex flex-col space-y-6 w-full">
+      <div class="flex flex-col justify-between items-start space-y-2 sm:space-y-0 sm:flex-row">
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl dark:text-gray-100">
           Clientes
         </h1>
+        <BaseButton v-if="customers.data && customers.data.length > 0" to="/products/create">
+          Nuevo producto
+        </BaseButton>
       </div>
-      <div class="flex-col sm:space-y-6">
-        <template v-if="isLoaded">
-          <template v-if="alreadyHasData">
-            <div class="flex-col px-4 py-6 space-y-6 bg-white rounded-lg shadow sm:px-6">
-              <div class="flex w-full space-x-2">
-                <div class="flex items-center w-full sm:max-w-xs lg:max-w-sm">
-                  <label class="sr-only" for="searchCustomers">Buscar</label>
-                  <div class="relative w-full">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                      </svg>
-                    </div>
-                    <input
-                      id="searchCustomers"
-                      v-model="searchCustomer"
-                      class="pl-10 pr-3 base-input focus:placeholder-gray-500"
-                      name="searchCustomers"
-                      placeholder="Filtrar cliente"
-                      type="search"
-                      @input="debounceSearchOrFilterCustomer"
+      <template v-if="isLoaded">
+        <template v-if="alreadyHasData">
+          <div class="flex-col bg-white rounded-lg border border-gray-300 shadow dark:bg-gray-800 dark:border-gray-700">
+            <!--            Filtros-->
+            <div class="flex justify-between items-center p-2">
+              <button
+                aria-expanded="true"
+                aria-haspopup="true"
+                class="flex justify-center items-center w-10 h-10 rounded-full hover:bg-gray-500/5 focus:outline-none text-primary-500 focus:bg-primary-500/10"
+                type="button"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                </svg>
+              </button>
+              <div class="flex gap-2 items-center w-full md:w-auto md:max-w-md">
+                <!--              Buscador-->
+                <div class="flex items-center w-full">
+                  <label class="sr-only" for="searchProducts">Buscar</label>
+                  <div class="relative group">
+                    <span class="flex absolute inset-y-0 left-0 justify-center items-center w-9 h-9 text-gray-400 pointer-events-none group-focus-within:text-primary-500">
+                      <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>        </span>
+                    <input id="searchProducts"
+                           v-model="searchCustomer"
+                           class="input-search"
+                           name="searchProducts"
+                           placeholder="Buscar"
+                           type="search"
+                           @input="debounceSearchOrFilterCustomer"
                     >
                   </div>
                 </div>
-                <div class="relative z-10 inline-flex rounded-md shadow-sm">
-                  <TableFilters name="Estado" size="w-60">
-                    <template #dropdown-body>
-                      <div class="flex flex-col p-4 space-y-2">
-                        <span class="text-sm font-medium text-gray-800">Estado:</span>
-                        <div class="relative flex items-start cursor-pointer">
-                          <div class="flex items-center h-5">
-                            <input
-                              id="customer_active"
-                              v-model="stateCustomerFilters"
-                              aria-describedby="customer_active-description"
-                              class="cursor-pointer base-checkbox"
-                              name="customer_active"
-                              type="checkbox"
-                              value="1"
-                              @change="debounceSearchOrFilterCustomer"
-                            >
-                          </div>
-                          <div class="ml-3 text-sm">
-                            <label class="font-medium text-gray-600 cursor-pointer" for="customer_active">Activo</label>
-                          </div>
+                <!--              Filtros-->
+                <TableFilters size="w-72">
+                  <template #dropdown-body>
+                    <div class="flex flex-col p-4 space-y-2">
+                      <span class="text-sm font-medium dark:text-gray-100 text-gray-900">
+                        Estado:
+                      </span>
+                      <div class="relative flex items-start cursor-pointer">
+                        <div class="flex items-center h-5">
+                          <input
+                            id="customer_active"
+                            v-model="stateCustomerFilters"
+                            aria-describedby="customer_active-description"
+                            class="cursor-pointer base-checkbox"
+                            name="customer_active"
+                            type="checkbox"
+                            value="1"
+                            @change="debounceSearchOrFilterCustomer"
+                          >
                         </div>
-                        <div>
-                          <div class="relative flex items-start cursor-pointer">
-                            <div class="flex items-center h-5">
-                              <input
-                                id="customer_inactive"
-                                v-model="stateCustomerFilters"
-                                aria-describedby="customer_inactive-description"
-                                class="cursor-pointer base-checkbox"
-                                name="customer_inactive"
-                                type="checkbox"
-                                value="0"
-                                @change="debounceSearchOrFilterCustomer"
-                              >
-                            </div>
-                            <div class="ml-3 text-sm">
-                              <label class="font-medium text-gray-600 cursor-pointer" for="customer_inactive">Inactivo</label>
-                            </div>
-                          </div>
+                        <div class="ml-3 text-sm">
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="customer_active">
+                            Activo
+                          </label>
                         </div>
                       </div>
-                      <div class="flex flex-col p-4 space-y-2">
-                        <span class="text-sm font-medium text-gray-800">Cuenta verificada:</span>
-                        <div class="relative flex items-start cursor-pointer">
-                          <div class="flex items-center h-5">
-                            <input
-                              id="identification_verified_authorized"
-                              v-model="identificationVerifiedFilters"
-                              aria-describedby="identification_verified_authorized-description"
-                              class="cursor-pointer base-checkbox"
-                              name="identification_verified_authorized"
-                              type="checkbox"
-                              value="1"
-                              @change="debounceSearchOrFilterCustomer"
-                            >
-                          </div>
-                          <div class="ml-3 text-sm">
-                            <label class="font-medium text-gray-600 cursor-pointer" for="identification_verified_authorized">Autorizada</label>
-                          </div>
+                      <div class="relative flex items-start cursor-pointer">
+                        <div class="flex items-center h-5">
+                          <input
+                            id="customer_inactive"
+                            v-model="stateCustomerFilters"
+                            aria-describedby="customer_inactive-description"
+                            class="cursor-pointer base-checkbox"
+                            name="customer_inactive"
+                            type="checkbox"
+                            value="0"
+                            @change="debounceSearchOrFilterCustomer"
+                          >
                         </div>
-                        <div>
-                          <div class="relative flex items-start cursor-pointer">
-                            <div class="flex items-center h-5">
-                              <input
-                                id="identification_verified_unauthorized"
-                                v-model="identificationVerifiedFilters"
-                                aria-describedby="identification_verified_unauthorized-description"
-                                class="cursor-pointer base-checkbox"
-                                name="identification_verified_unauthorized"
-                                type="checkbox"
-                                value="0"
-                                @change="debounceSearchOrFilterCustomer"
-                              >
-                            </div>
-                            <div class="ml-3 text-sm">
-                              <label class="font-medium text-gray-600 cursor-pointer" for="identification_verified_unauthorized">No autorizada</label>
-                            </div>
-                          </div>
+                        <div class="ml-3 text-sm">
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="customer_inactive">
+                            Inactivo
+                          </label>
                         </div>
                       </div>
-                    </template>
-                  </TableFilters>
-                </div>
-                <!-- <button class="relative inline-flex items-center px-4 py-2 -ml-px font-medium text-gray-700 bg-white border border-gray-300 rounded-md xs:hidden sm:text-sm justify-items-center hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 focus:ring-opacity-50">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                  </svg>
-                </button> -->
-              </div>
-              <div class="flex flex-col w-full my-2 space-y-4">
-                <div :class="{'shadow': customers.data.length > 0}" class="relative block w-full overflow-x-auto rounded rounded-t">
-                  <template v-if="isFetching">
-                    <div class="absolute inset-0 z-0 bg-white opacity-60" />
-                    <div class="absolute inset-0 z-0 flex items-center justify-center">
-                      <svg class="w-10 h-10 text-primary-500 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                        <path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor" />
-                      </svg>
+                    </div>
+                    <div class="flex flex-col p-4 space-y-2">
+                      <span class="text-sm font-medium dark:text-gray-100 text-gray-900">
+                        Cuenta verificada:
+                      </span>
+                      <div class="relative flex items-start cursor-pointer">
+                        <div class="flex items-center h-5">
+                          <input
+                            id="identification_verified_authorized"
+                            v-model="identificationVerifiedFilters"
+                            aria-describedby="identification_verified_authorized-description"
+                            class="cursor-pointer base-checkbox"
+                            name="identification_verified_authorized"
+                            type="checkbox"
+                            value="1"
+                            @change="debounceSearchOrFilterCustomer"
+                          >
+                        </div>
+                        <div class="ml-3 text-sm">
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="identification_verified_authorized">
+                            Autorizada
+                          </label>
+                        </div>
+                      </div>
+                      <div class="relative flex items-start cursor-pointer">
+                        <div class="flex items-center h-5">
+                          <input
+                            id="identification_verified_unauthorized"
+                            v-model="identificationVerifiedFilters"
+                            aria-describedby="identification_verified_unauthorized-description"
+                            class="cursor-pointer base-checkbox"
+                            name="identification_verified_unauthorized"
+                            type="checkbox"
+                            value="0"
+                            @change="debounceSearchOrFilterCustomer"
+                          >
+                        </div>
+                        <div class="ml-3 text-sm">
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="identification_verified_unauthorized">
+                            No autorizada
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </template>
-                  <table v-if="customers.data.length >0 " class="min-w-full divide-y divide-gray-50">
-                    <thead class="border-b bg-gray-50">
-                      <tr>
-                        <th class="px-6 py-3">
-                          <div class="flex items-center text-xs text-left">
-                            <span class="font-medium tracking-wider text-gray-500 uppercase"> Cliente </span>
-                          </div>
-                        </th>
-                        <th class="px-6 py-3">
-                          <div class="flex items-center text-xs text-left">
-                            <span class="font-medium tracking-wider text-gray-500 uppercase"> Cuenta verificada </span>
-                          </div>
-                        </th>
-                        <th class="px-6 py-3">
-                          <div class="flex items-center text-xs text-left">
-                            <span class="font-medium tracking-wider text-gray-500 uppercase"> Estado </span>
-                          </div>
-                        </th>
-                        <th class="px-6 py-3">
-                          <div class="flex items-center text-xs text-left">
-                            <span class="font-medium tracking-wider text-gray-500 uppercase"> Registrado el </span>
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody v-if="customers.data.length > 0" class="bg-white divide-y divide-gray-200">
-                      <tr v-for="(customer,index) in customers.data" :key="index" class="cursor-pointer hover:bg-gray-50" @click="redirectToEditCustomer(customer.user_id)">
-                        <td class="px-6 py-4 text-left whitespace-nowrap">
-                          <div class="flex items-center">
-                            <span class="inline-block w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
-                              <svg class="w-full h-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                              </svg>
-                            </span>
-                            <div class="ml-4">
-                              <nuxt-link :to="`/customers/${customer.user_id}`" class="text-sm font-medium text-gray-900 rounded-md hover:underline line-clamp-3 focus:outline-none focus:ring-primary-500 focus:ring-2 focus:ring-opacity-50">
-                                {{ getFullName(customer) }}
-                              </nuxt-link>
-                              <div class="text-sm text-gray-500">
-                                {{ customer.email }}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 text-left whitespace-nowrap">
-                          <div class="flex items-center">
-                            <BadgeIdentificationVerified :details="customer.details" />
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 text-left whitespace-nowrap">
-                          <div class="flex items-center">
-                            <BadgeStatusUser :status="customer.details.status" />
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-left whitespace-nowrap">
-                          <span class="inline-flex items-center justify-center">
-                            {{ parseDate(customer.created_at) }}
+                </TableFilters>
+              </div>
+            </div>
+            <!--            Tabla-->
+            <div class="flex flex-col w-full">
+              <div class="block overflow-x-auto relative w-full border-t border-b border-gray-300 dark:border-gray-700">
+                <BaseSpinnerTable v-if="isFetching" />
+                <table v-if="customers.data.length > 0 " class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+                  <thead>
+                    <tr class="bg-gray-50">
+                      <th class="px-4 py-2 dark:bg-gray-800">
+                        <button type="button" class="flex items-center space-x-1 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                          <span>
+                            Cliente
                           </span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div v-else class="flex flex-col items-center justify-center h-64 py-8 space-y-4 text-center">
-                    <svg class="flex-shrink-0 w-10 h-10 text-gray-400 sm:w-16 sm:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" />
-                    </svg>
-                    <div class="flex flex-col space-y-2">
-                      <p class="text-lg sm:text-xl">
-                        No se encontraron los clientes
-                      </p>
-                      <p class="text-sm text-gray-500">
-                        Intenta cambiar los filtros o el término de búsqueda
-                      </p>
-                    </div>
+                        </button>
+                      </th>
+                      <th class="px-4 py-2 dark:bg-gray-800">
+                        <div class="flex items-center text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                          <span>
+                            Correo
+                          </span>
+                        </div>
+                      </th>
+                      <th class="px-4 py-2 dark:bg-gray-800">
+                        <div class="flex items-center text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                          <span>
+                            Cuenta verificada
+                          </span>
+                        </div>
+                      </th>
+                      <th class="px-4 py-2 dark:bg-gray-800">
+                        <div class="flex items-center text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                          <span>
+                            Estado
+                          </span>
+                        </div>
+                      </th>
+                      <th class="px-4 py-2 dark:bg-gray-800">
+                        <button type="button" class="flex items-center space-x-1 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                          <span>
+                            Registrado el
+                          </span>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                    <tr v-for="(customer,index) in customers.data" :key="index" class="cursor-pointer" @click="redirectToEditCustomer(customer.user_id)">
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <nuxt-link :to="`/customers/${customer.user_id}`" class="text-gray-900 rounded-md dark:text-white hover:underline line-clamp-3 focus:outline-none focus:ring-primary-500/25 focus:ring-2">
+                          {{ getFullName(customer) }}
+                        </nuxt-link>
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="inline-flex justify-center items-center text-gray-900 dark:text-white">
+                          {{ customer.email }}
+                        </span>
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <BadgeIdentificationVerified :details="customer.details" />
+                        </div>
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <BadgeStatusUser :status="customer.details.status" />
+                        </div>
+                      </td>
+                      <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="text-gray-900 dark:text-white">
+                          {{ parseDate(customer.created_at) }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div v-else class="flex flex-col items-center justify-center h-64 py-8 space-y-4 text-center">
+                  <svg class="flex-shrink-0 w-10 h-10 text-gray-400 sm:w-16 sm:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" />
+                  </svg>
+                  <div class="flex flex-col space-y-2">
+                    <p class="text-lg sm:text-xl">
+                      No se encontraron los clientes
+                    </p>
+                    <p class="text-sm text-gray-500">
+                      Intenta cambiar los filtros o el término de búsqueda
+                    </p>
                   </div>
                 </div>
-                <BasePaginator
-                  v-if="customers.data.length > 0"
-                  v-model="customers.meta.current_page"
-                  :disabled="isFetching"
-                  :item-count="customers.data.length"
-                  :items-per-page.sync="customers.meta.per_page"
-                  :total-items="customers.meta.total"
-                  :total-pages="customers.meta.last_page"
-                />
               </div>
+              <BasePaginator
+                v-if="customers.data.length > 0"
+                v-model="customers.meta.current_page"
+                :disabled="isFetching"
+                :is-fetching="isFetching"
+                :item-count="customers.data.length"
+                :items-per-page.sync="customers.meta.per_page"
+                :total-items="customers.meta.total"
+                :total-pages="customers.meta.last_page"
+              />
             </div>
-          </template>
-          <template v-else>
-            <div class="h-full overflow-hidden text-center bg-white rounded-lg shadow">
-              <div class="flex flex-col p-8">
-                <img alt="Inicio Clientes" class="h-auto mx-auto w-72" src="@/static/images/main-pages/main-customer-motion.svg">
-                <p class="text-xl">
-                  Gestionar los detalles del cliente
-                </p>
-                <p class="max-w-xs mx-auto my-4 text-sm text-gray-500">
-                  Aquí es donde puede ver la información de los clientes, admitirlos y gestionar sus accesos.
-                </p>
-              </div>
-            </div>
-          </template>
+          </div>
         </template>
-      </div>
+        <template v-else>
+          <div class="h-full overflow-hidden text-center bg-white rounded-lg shadow">
+            <div class="flex flex-col p-8">
+              <img alt="Inicio Clientes" class="h-auto mx-auto w-72" src="@/static/images/main-pages/main-customer-motion.svg">
+              <p class="text-xl">
+                Gestionar los detalles del cliente
+              </p>
+              <p class="max-w-xs mx-auto my-4 text-sm text-gray-500">
+                Aquí es donde puede ver la información de los clientes, admitirlos y gestionar sus accesos.
+              </p>
+            </div>
+          </div>
+        </template>
+      </template>
     </div>
     <SkeletonIndexPage v-else />
   </div>

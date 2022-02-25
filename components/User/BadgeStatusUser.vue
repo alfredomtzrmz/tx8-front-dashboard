@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     returnClassColor () {
-      return this.status === 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+      return this.status === 0 ? 'text-red-700 bg-red-500/10 dark:text-red-500' : 'bg-green-500/10 text-green-700 dark:text-green-500'
     },
     returnText () {
       return this.status === 0 ? 'Inactivo' : 'Activo'

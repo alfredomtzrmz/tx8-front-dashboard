@@ -58,34 +58,36 @@
                             name="product_active"
                             type="checkbox"
                             value="1"
-                            @change="searchOrSelectProduct"
+                            @change="debounceSearchProducts"
                           >
                         </div>
                         <div class="ml-3 text-sm">
-                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_active">Activo</label>
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_active">
+                            Activo
+                          </label>
                         </div>
                       </div>
-                      <div>
-                        <div class="flex relative items-start cursor-pointer">
-                          <div class="flex items-center h-5">
-                            <input
-                              id="product_draft"
-                              v-model="stateProductFilters"
-                              aria-describedby="product_draft-description"
-                              class="cursor-pointer base-checkbox"
-                              name="product_draft"
-                              type="checkbox"
-                              value="0"
-                              @change="debounceSearchProducts"
-                            >
-                          </div>
-                          <div class="ml-3 text-sm">
-                            <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_draft">Borrador</label>
-                          </div>
+                      <div class="flex relative items-start cursor-pointer">
+                        <div class="flex items-center h-5">
+                          <input
+                            id="product_draft"
+                            v-model="stateProductFilters"
+                            aria-describedby="product_draft-description"
+                            class="cursor-pointer base-checkbox"
+                            name="product_draft"
+                            type="checkbox"
+                            value="0"
+                            @change="debounceSearchProducts"
+                          >
+                        </div>
+                        <div class="ml-3 text-sm">
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_draft">
+                            Borrador
+                          </label>
                         </div>
                       </div>
                     </div>
-                    <div class="flex flex-col px-4 pb-4 space-y-2">
+                    <div class="flex flex-col p-4 space-y-2">
                       <span class="text-sm font-medium dark:text-gray-100 text-gray-900">Tipo:</span>
                       <div class="flex relative items-start cursor-pointer">
                         <div class="flex items-center h-5">
@@ -101,26 +103,28 @@
                           >
                         </div>
                         <div class="ml-3 text-sm">
-                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_simple">Simple</label>
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_simple">
+                            Simple
+                          </label>
                         </div>
                       </div>
-                      <div>
-                        <div class="flex relative items-start cursor-pointer">
-                          <div class="flex items-center h-5">
-                            <input
-                              id="product_variant"
-                              v-model="typeProductFilters"
-                              aria-describedby="product_variant-description"
-                              class="cursor-pointer base-checkbox"
-                              name="product_variant"
-                              type="checkbox"
-                              value="variant"
-                              @change="debounceSearchProducts"
-                            >
-                          </div>
-                          <div class="ml-3 text-sm">
-                            <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_variant">Variantes</label>
-                          </div>
+                      <div class="flex relative items-start cursor-pointer">
+                        <div class="flex items-center h-5">
+                          <input
+                            id="product_variant"
+                            v-model="typeProductFilters"
+                            aria-describedby="product_variant-description"
+                            class="cursor-pointer base-checkbox"
+                            name="product_variant"
+                            type="checkbox"
+                            value="variant"
+                            @change="debounceSearchProducts"
+                          >
+                        </div>
+                        <div class="ml-3 text-sm">
+                          <label class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="product_variant">
+                            Variantes
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -131,7 +135,7 @@
             <!--            Tabla-->
             <div class="flex flex-col w-full">
               <div class="block overflow-x-auto relative w-full border-t border-b border-gray-300 dark:border-gray-700">
-                <BaseSpinnerTable v-if="isFetching" />
+                <BaseSpinnerTable v-if="isFetching && products.data.length > 0" />
                 <table v-if="products.data.length >0 " class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                   <thead>
                     <tr class="bg-gray-50">
@@ -172,7 +176,7 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody v-if="products.data.length > 0" class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                  <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                     <tr v-for="(product,index) in products.data" :key="index" class="cursor-pointer" @click="redirectToEditProduct(product.id)">
                       <td class="flex items-center px-4 py-3 whitespace-nowrap">
                         <div class="flex items-center space-x-4 w-full">
@@ -207,7 +211,7 @@
                         <BadgeType :type="product.type" />
                       </td>
                       <td class="px-4 py-3 whitespace-nowrap">
-                        <span class="inline-flex justify-center items-center text-gray-900 dark:text-white">
+                        <span class="text-gray-900 dark:text-white">
                           {{ parseDate(product.created_at) }}
                         </span>
                       </td>
@@ -315,7 +319,7 @@ export default {
             'filter[name]': this.searchProduct || null,
             'filter[status]': this.stateProductFilters,
             'filter[type]': this.typeProductFilters,
-            limit: this.products.meta?.per_page ?? 5,
+            limit: this.products.meta?.per_page ?? 10,
             page: this.isSearchOrSelect ? 1 : (this.products.meta?.current_page ?? 1)
           }
         })
@@ -347,12 +351,9 @@ export default {
       return product.type === 'single' ? 'Simple' : 'Variantes'
     },
     debounceSearchProducts: _.debounce(function () {
-      this.searchOrSelectProduct()
-    }, 300),
-    searchOrSelectProduct () {
       this.isSearchOrSelect = true
       this.fetchProducts()
-    },
+    }, 300),
     parseDate (date) {
       return dayjs(date).locale('es').format('DD MMMM YYYY')
     }

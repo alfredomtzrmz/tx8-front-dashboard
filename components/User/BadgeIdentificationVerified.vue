@@ -25,13 +25,13 @@ export default {
       return _.get(this.details, ['identification_verified'], 0)
     },
     dynamicInfo () {
-      let bgColor = 'bg-red-100 text-red-800'
+      let bgColor = 'text-red-700 bg-red-500/10 dark:text-red-500'
       let text = 'No autorizada'
       if (this.returnIdentificationVerified === 1) {
-        bgColor = 'bg-green-100 text-green-800'
+        bgColor = 'bg-green-500/10 text-green-700 dark:text-green-500'
         text = 'Autorizada'
       } else if (this.returnIdentification && this.returnIdentificationVerified === 0) {
-        bgColor = 'bg-yellow-100 text-yellow-800'
+        bgColor = 'text-amber-700 bg-amber-500/10 dark:text-amber-500'
         text = 'Sin verificar'
       }
       return { bgColor, text }
