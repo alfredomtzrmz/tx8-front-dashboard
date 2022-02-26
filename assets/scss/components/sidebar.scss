@@ -1,46 +1,8 @@
 .sidebar {
   &-item-link {
-    @apply flex gap-3 items-center px-3 py-2 font-medium rounded-lg transition hover:bg-gray-500/5 focus:bg-gray-500/5 dark:text-gray-300 dark:hover:bg-gray-700;
+    @apply flex gap-3 items-center px-3 py-2 font-medium rounded-lg text-gray-900 transition hover:bg-gray-500/5 focus:bg-gray-500/5 dark:text-gray-300 dark:hover:bg-gray-700;
 
     &--active {
       @apply text-white bg-primary-500 hover:bg-primary-500 focus:bg-primary-500 dark:text-white dark:hover:bg-primary-500}
   }
-
-  //&-item {
-  //  @apply flex gap-3 items-center px-3 py-2 w-full text-sm font-medium rounded-lg transition hover:bg-gray-500/5 focus:bg-gray-500/5 dark:text-gray-300 dark:hover:bg-gray-700;
-  //  //@apply flex items-center py-2 pl-2 w-full text-sm font-medium text-gray-900 rounded-md transition duration-100 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-200;
-  //
-  //  &--w-indicator {
-  //    @apply pr-1;
-  //  }
-  //
-  //  &--active {
-  //    @apply bg-opacity-75 bg-primary-100 text-primary-600 hover:bg-primary-100 hover:text-primary-600 hover:bg-opacity-75;
-  //  }
-  //
-  //  &-indicator {
-  //    @apply ml-auto w-5 h-5 text-gray-300 group-hover:text-gray-400;
-  //
-  //    &--active {
-  //      @apply text-primary-300 group-hover:text-primary-300;
-  //    }
-  //  }
-  //
-  //  &-icon {
-  //    @apply mr-3 w-6 h-6 text-gray-900;
-  //
-  //    &--active {
-  //      @apply text-primary-600 group-hover:text-primary-600;
-  //    }
-  //  }
-  //}
-
-  //&-subitem {
-  //  @apply flex items-center py-2 pr-2 pl-11 w-full text-sm font-medium text-gray-900 rounded-md border-transparent transition duration-100 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-300 hover:bg-gray-50;
-  //
-  //  &--active {
-  //    @apply text-gray-900 bg-gray-50;
-  //  }
-  //}
-
 }
