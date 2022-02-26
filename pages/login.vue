@@ -1,78 +1,82 @@
 <template>
-  <div class="">
+  <div class="p-2">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <img alt="Workflow" class="w-auto h-20 mx-auto" src="/images/logo.svg">
-
-      <h2 class="mt-6 text-2xl font-extrabold text-center text-gray-900 sm:text-3xl">
+      <img alt="TX8 Logo" class="mx-auto w-auto h-20" src="/images/logo.svg">
+    </div>
+    <div class="px-4 py-8 space-y-8 mt-8 bg-white shadow sm:w-full sm:max-w-md sm:mx-auto rounded-2xl sm:px-10 border border-gray-300 dark:bg-gray-800 dark:border-gray-700">
+      <h2 class="font-bold tracking-tight text-center text-2xl text-gray-900 dark:text-gray-100">
         Inicia sesión en tu cuenta
       </h2>
-    </div>
-
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-        <form class="space-y-6" novalidate @submit.prevent="userLogin">
+      <form novalidate @submit.prevent="userLogin">
+        <div class="space-y-6 flex flex-col mb-2">
           <div>
-            <label class="block text-sm font-medium text-gray-700" for="email">
+            <label
+              class="block text-sm font-medium "
+              :class="errors.email || errors.invalid ?'text-red-700':'text-gray-700 dark:text-gray-300'"
+              for="email"
+            >
               Email
             </label>
             <div class="mt-1">
               <input
                 id="email"
                 v-model="login.email"
-                :class="{'base-input--error': errors.email || errors.invalid}"
+                :class="errors.email || errors.invalid ?'border-red-600 dark:border-red-600 dark:ring-red-600':'border-gray-300 dark:border-gray-600'"
                 autocomplete="email"
-                class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                class="block w-full rounded-lg shadow-sm transition duration-75 focus:border-primary-600 focus:ring-1 focus:ring-inset focus:ring-primary-600 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 name="email"
                 type="email"
+                required="true"
               >
             </div>
             <div v-if="errors.email" class="flex flex-col">
-              <span v-for="error in errors.email" :key="error.id" class="mt-1 text-xs text-red-500">
+              <span v-for="error in errors.email" :key="error.id" class="mt-1 text-sm text-red-600">
                 {{ error }}
               </span>
             </div>
           </div>
-
           <div>
-            <label class="block text-sm font-medium text-gray-700" for="password">
+            <label
+              class="block text-sm font-medium"
+              :class="errors.password || errors.invalid ?'text-red-700':'text-gray-700 dark:text-gray-300'"
+              for="password"
+            >
               Contraseña
             </label>
             <div class="mt-1">
               <input
                 id="password"
                 v-model="login.password"
-                :class="{'base-input--error': errors.password || errors.invalid}"
+                :class="errors.password || errors.invalid ?'border-red-600 dark:border-red-600 dark:ring-red-600':'border-gray-300 dark:border-gray-600'"
                 autocomplete="current-password"
-                class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                class="block w-full rounded-lg shadow-sm transition duration-75 focus:border-primary-600 focus:ring-1 focus:ring-inset focus:ring-primary-600 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 name="password"
                 type="password"
               >
             </div>
             <div v-if="errors.password" class="flex flex-col">
-              <span v-for="error in errors.password" :key="error.id" class="mt-1 text-xs text-red-500">
+              <span v-for="error in errors.password" :key="error.id" class="mt-1 text-sm text-red-600">
                 {{ error }}
               </span>
             </div>
           </div>
-
-          <span v-if="errors.invalid" class="mt-1 text-xs text-red-500">
-            {{ errors.invalid }}
-          </span>
-
-          <div class="flex items-center justify-between">
-            <div class="text-sm">
-              <a class="font-medium text-primary-600 hover:text-primary-500" href="#">
-                ¿Olvidaste tu contraseña?
-              </a>
-            </div>
+        </div>
+        <span v-if="errors.invalid" class="text-sm text-red-600">
+          {{ errors.invalid }}
+        </span>
+        <div class="flex flex-col space-y-6 mt-6">
+          <div class="flex justify-between items-center">
+            <a class="font-medium text-sm text-primary-600 hover:text-primary-500" href="#">
+              ¿Olvidaste tu contraseña?
+            </a>
           </div>
-          <div class="flex items-center justify-items-center">
+          <div class="flex justify-items-center items-center">
             <base-button :disabled="isLoading" :is-loading="isLoading" class="w-full" type="submit">
               Entrar
             </base-button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
