@@ -49,7 +49,7 @@ export default {
 </script>
 <style scoped>
 .fade-enter-active {
-  transition: opacity 1s ease-in-out;
+  transition: opacity .5s ease-in-out;
 }
 .fade-enter-to{
   opacity: 1;

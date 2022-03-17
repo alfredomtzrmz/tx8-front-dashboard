@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: [
     'components/**/*.{vue,js}',
@@ -10,6 +12,10 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
+    screens: {
+      xs: '425px',
+      ...defaultTheme.screens
+    },
     extend: {
       colors: {
         primary: {
@@ -24,9 +30,6 @@ module.exports = {
           800: '#564211',
           900: '#392C0B'
         }
-      },
-      screens: {
-        xs: '425px'
       },
       animation: {
         'spin-faster': 'spin .5s linear infinite'

@@ -97,6 +97,7 @@ export default {
     '@nuxtjs/axios',
     // https://auth.nuxtjs.org/
     '@nuxtjs/auth-next',
+    // https://github.com/nuxt/postcss8
     '@nuxt/postcss8'
   ],
 

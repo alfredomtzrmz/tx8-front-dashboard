@@ -1,12 +1,12 @@
 .base-input {
-  @apply block w-full placeholder-gray-400 rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500 focus:ring-opacity-50 sm:text-sm;
+  @apply block w-full rounded-lg border-gray-300 shadow-sm transition duration-75 focus:border-primary-600 focus:ring-1 focus:ring-inset focus:ring-primary-600 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:placeholder-gray-400;
 
   &--success {
     @apply border-green-500 focus:border-green-500 focus:ring-green-500 focus:ring-opacity-50;
   }
 
   &--error {
-    @apply border-red-500 focus:border-red-500 focus:ring-red-500 focus:ring-opacity-50;
+    @apply border-red-600 dark:border-red-600 ring-red-600;
   }
 }
 
