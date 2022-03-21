@@ -1,6 +1,6 @@
 <template>
-  <div class="space-y-5 w-full">
-    <BaseModal :is-open="isModalUploadOpen" title="Agregar elementos multimedia" size="lg" :close-button="false">
+  <div>
+    <BaseModal :is-open="mutableIsModalUploadOpen" title="Agregar elementos multimedia" size="lg" :close-button="false">
       <template #modal-body>
         <div class="px-6 pb-6">
           <div
@@ -24,7 +24,7 @@
             </span>
             <div v-if="getValidImagesArrayLength >= 1" class="overflow-y-auto">
               <ul role="list" class="grid gap-4 md:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2">
-                <MediaThumbnail
+                <MediaUploadThumbnail
                   v-for="(fileImage, index) in validImagesArray"
                   :key="fileImage.id"
                   :media-file="fileImage"
@@ -153,6 +153,14 @@ export default {
     }
   },
   computed: {
+    mutableIsModalUploadOpen: {
+      get () {
+        return this.isModalUploadOpen
+      },
+      set (value) {
+        this.$emit('update:isModalUploadOpen', value)
+      }
+    },
     getValidImagesArrayLength () {
       return _.size(this.validImagesArray)
     }
@@ -164,8 +172,20 @@ export default {
       }
     },
     indexesOfSavedImages (newValue) {
-      if (_.size(newValue) === this.validImagesArrayLength) {
+      const indexesOfSavedImagesLength = _.size(newValue)
+
+      if (indexesOfSavedImagesLength >= 1) {
+        if (_.size(newValue) === this.validImagesArrayLength) {
+          this.mutableIsModalUploadOpen = false
+          this.$emit('uploadFinished', true)
+        }
+      }
+    },
+    isModalUploadOpen (newValue) {
+      if (newValue) {
         this.isUploading = false
+        this.validImagesArrayLength = 0
+        this.indexesOfSavedImages = []
       }
     }
   },

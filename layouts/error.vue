@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center w-full space-y-4">
     <template v-if="errorStatusCode === 404">
-      <img src="@/static/images/404-error-motion.svg" alt="Error 404 - Page not found" class="h-auto mx-auto sm:w-80">
+      <img src="@/static/images/404-error-motion.svg" alt="Error 404 - Page not found" class="block w-auto h-7">
       <div class="flex flex-col items-center">
         <h2 class="text-2xl font-bold text-center sm:text-4xl text-truegray-700">
           Página no encontrada.

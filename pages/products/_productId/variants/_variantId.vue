@@ -19,7 +19,7 @@
           <div class="space-y-6 md:col-start-1 md:col-span-1">
             <!-- thumbnail and resume -->
             <div class="flex-col px-4 py-5 bg-white rounded-md shadow sm:px-5">
-              <p class="font-medium text-gray-900 text">
+              <p class="text-gray-900 text">
                 Whiskey Jack Daniel's Honey
               </p>
               <BadgeStatus :status="1" class="my-1" size="sm" />
@@ -59,8 +59,35 @@
           <!-- right/down content -->
           <div class="flex flex-col md:space-y-6 md:col-start-2 md:col-span-2">
             <!-- options -->
-            <div class="px-4 py-5 bg-white rounded-md shadow sm:px-5">
-              Hola
+            <div class="px-4 py-5 bg-white rounded-md shadow sm:px-5 space-y-6">
+              <h2 class="text-base font-semibold text-gray-900">
+                Opciones
+              </h2>
+              <div class="max-w-[10.5rem] w-full">
+                <label class="base-label" for="nomenclature_value">
+                  Valor y nomenclatura
+                </label>
+                <div class="relative mt-1">
+                  <input id="nomenclature_value"
+                         v-maska="'#*.##'"
+                         :maxlength="7"
+                         type="text"
+                         name="nomenclature_value"
+                         class="pl-2 pr-16 base-input"
+                         placeholder="0"
+                  >
+                  <div class="absolute inset-y-0 right-0 z-10 flex items-center">
+                    <label :for="`nomenclature_value-${2}`" class="sr-only">Nomenclature</label>
+                    <select :id="`nomenclature_value-${2}`" :name="`nomenclature_value-${2}`" class="rounded-md cursor-pointer pr-7 custom-select">
+                      <template v-for="(nomenclature) in nomenclatures">
+                        <option v-if="nomenclature.show" :key="nomenclature.id" :value="nomenclature.id">
+                          {{ nomenclature.name }}
+                        </option>
+                      </template>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -79,9 +106,32 @@ export default {
       isLoadingEdit: false,
       errors: {},
       variant: {},
+      nomenclatures: [],
       productThumbnailImage: null,
       productThumbnailImageError: '',
       baseUrl: this.$config.baseImageUrl
+    }
+  },
+  fetchOnServer: false,
+  async fetch () {
+    await this.fetchNomenclatures()
+  },
+  methods: {
+    async fetchNomenclatures () {
+      try {
+        const { data } = await this.$axios.$get('/nomenclatures')
+        this.nomenclatures = data
+      } catch (e) {
+        this.$notify(
+          {
+            group: 'top',
+            type: 'error',
+            title: '¡Error!',
+            text: 'Ocurrió un error al obtener las nomenclaturas'
+          },
+          3000
+        )
+      }
     }
   }
 }

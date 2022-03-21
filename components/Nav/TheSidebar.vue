@@ -63,7 +63,7 @@
       </transition>
     </div>
     <!-- Static sidebar for desktop -->
-    <aside class="fixed z-10 hidden h-full bg-white dark:bg-gray-800 dark:border-gray-700 flex flex-col border-r border-gray-200 w-80 lg:flex-1 lg:flex">
+    <aside class="fixed z-10 hidden h-full bg-white dark:bg-gray-800 dark:border-gray-700 flex flex-col border-r border-gray-200 w-72 lg:flex-1 lg:flex">
       <header class="border-b h-16 shrink-0 px-6 flex items-center dark:bg-gray-800 dark:border-gray-700">
         <span class="text-xl font-bold tracking-tight dark:text-white">
           TX8 Admin

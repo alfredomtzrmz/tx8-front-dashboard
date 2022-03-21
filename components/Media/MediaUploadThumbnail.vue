@@ -45,7 +45,7 @@
 import * as _ from 'lodash'
 
 export default {
-  name: 'MediaThumbnail',
+  name: 'MediaUploadThumbnail',
   props: {
     index: {
       type: Number,

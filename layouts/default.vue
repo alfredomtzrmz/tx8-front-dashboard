@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col w-full min-h-screen">
     <TheSidebar />
-    <div class="lg:ml-80">
+    <div class="lg:ml-72">
       <TheNavbar />
       <main class="overflow-y-auto relative">
         <div class="p-4 mx-auto w-full max-w-7xl md:p-6 lg:p-8">
