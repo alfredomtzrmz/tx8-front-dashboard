@@ -1,6 +1,51 @@
 <template>
   <div>
     <MediaUpload :is-modal-upload-open.sync="isModalUploadOpen" @closeModalUpload="isModalUploadOpen = false" @uploadFinished="fetchAgain" />
+    <BaseModal :is-open="isModalDetailsFileOpen" :title="`Detalles de ${selectedImageName}`" size="sm" :close-button="false">
+      <template #modal-body>
+        <div class="px-6 pb-6">
+          <div class="flex flex-col space-y-6">
+            <div class="flex relative flex-col rounded-md border border-gray-300 dark:border-gray-700">
+              <div class="flex flex-col flex-shrink-0 justify-center items-center p-1 w-auto h-56 text-center">
+                <div class="flex justify-center items-center w-full h-full">
+                  <LoadedImage v-if="returnThumbnail(selectedImage)" :alt="selectedImageName" :src="returnThumbnail(selectedImage)" classes="object-cover object-center h-full" />
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col space-y-6">
+              <div class="w-full">
+                <label for="file_name" class="base-label">Nombre</label>
+                <div class="relative mt-1">
+                  <input id="file_name" v-model.trim="selectedImageName" type="text" name="file_name" class="h-9 base-input">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template #modal-footer>
+        <div class="flex justify-center items-center px-6 py-4 space-x-3 bg-gray-50 rounded-b-lg border-t border-gray-300 dark:border-gray-700 dark:bg-transparent xs:justify-end">
+          <BaseButton
+            variant="white"
+            class="w-24"
+            size="sm"
+            :disabled="isUpdating"
+            @onClick="closeDetailsModal()"
+          >
+            Cancelar
+          </BaseButton>
+          <BaseButton
+            class="w-24"
+            size="sm"
+            :disabled="isUpdating"
+            :is-loading="isUpdating"
+            @onClick="updateImage()"
+          >
+            Actualizar
+          </BaseButton>
+        </div>
+      </template>
+    </BaseModal>
     <div class="space-y-5 w-full">
       <div v-if="isLoaded" class="flex flex-col space-y-6 w-full">
         <div class="flex flex-col justify-between items-start space-y-2 sm:space-y-0 sm:flex-row">
@@ -13,19 +58,33 @@
         </div>
         <template v-if="isLoaded">
           <template v-if="alreadyHasData">
-            <div class="flex-col bg-white rounded-lg border border-gray-300 shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex-col bg-white rounded-lg border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700">
               <!--            Filtros-->
-              <div class="flex justify-between items-center p-2">
-                <button
-                  aria-expanded="true"
-                  aria-haspopup="true"
-                  class="flex justify-center items-center w-10 h-10 rounded-full hover:bg-gray-500/5 focus:outline-none text-primary-500 focus:bg-primary-500/10"
-                  type="button"
-                >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                  </svg>
-                </button>
+              <div class="flex justify-between items-center p-2 h-14">
+                <div class="flex items-center gap-2">
+                  <div class="ml-3">
+                    <input
+                      :checked="checked"
+                      :indeterminate.prop="indeterminate"
+                      aria-describedby="select_all_items-description"
+                      class="cursor-pointer base-checkbox"
+                      name="select_all_items"
+                      type="checkbox"
+                      @change="selectAll"
+                    >
+                  </div>
+                  <button
+                    v-if="selected.length >=1"
+                    aria-expanded="true"
+                    aria-haspopup="true"
+                    class="flex justify-center items-center w-10 h-10 rounded-full hover:bg-gray-500/5 focus:outline-none text-primary-500 focus:bg-primary-500/10"
+                    type="button"
+                  >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                    </svg>
+                  </button>
+                </div>
                 <div class="flex gap-2 items-center w-full md:w-auto md:max-w-md">
                   <!--              Buscador-->
                   <div class="flex items-center w-full">
@@ -53,11 +112,86 @@
               </div>
               <!--            Tabla-->
               <div class="flex flex-col w-full">
-                <div class="block overflow-x-auto relative w-full border-t border-b border-gray-300 dark:border-gray-700">
+                <div class="block overflow-x-auto relative w-full border-t border-b border-gray-200 dark:border-gray-700">
                   <BaseSpinnerTable v-if="isFetching && images.data.length > 0" />
-                  <ul v-if="images.data.length >0 " role="list" class="p-4 grid gap-4 lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2">
-                    <MediaItemThumbnail v-for="(image) in images.data" :key="image.id" :image="image" />
-                  </ul>
+                  <table v-if="images.data.length >0 " class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead>
+                      <tr class="bg-gray-50">
+                        <th class="px-4 py-3 dark:bg-gray-800">
+                          <button type="button" class="flex items-center space-x-1 text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                            <span>
+                              Medio
+                            </span>
+                          </button>
+                        </th>
+                        <th class="px-4 py-3 dark:bg-gray-800">
+                          <div class="flex items-center text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                            <span>
+                              Tamaño
+                            </span>
+                          </div>
+                        </th>
+                        <th class="px-4 py-3 dark:bg-gray-800">
+                          <div class="flex items-center text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                            <span>
+                              Fecha de subida
+                            </span>
+                          </div>
+                        </th>
+                        <th class="px-4 py-3 dark:bg-gray-800">
+                          <div class="flex items-center text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                            <span>
+                              Última actualización
+                            </span>
+                          </div>
+                        </th>
+                        <th class="px-4 py-3 dark:bg-gray-800" />
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                      <tr v-for="(image,index) in images.data" :key="index">
+                        <td class="flex items-center px-4 py-3 whitespace-nowrap">
+                          <div class="flex items-center space-x-4 w-full">
+                            <div class="flex flex-col flex-shrink-0 justify-center items-center p-0.5 w-16 h-16 text-center rounded-md border border-gray-300 dark:border-gray-700">
+                              <div class="flex justify-center items-center w-full h-full">
+                                <LoadedImage v-if="returnThumbnail(image)" :alt="image.name" :src="returnThumbnail(image)" classes="object-cover object-center h-full" />
+                                <svg v-else class="w-6 h-6 text-gray-600 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                </svg>
+                              </div>
+                            </div>
+                            <span class="text-gray-900 rounded-md dark:text-white line-clamp-3">
+                              {{ image.name }}
+                            </span>
+                          </div>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span class="text-gray-900 dark:text-white">
+                            {{ returnSize(image) }}
+                          </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span class="text-gray-900 dark:text-white">
+                            {{ parseDate(image.created_at) }}
+                          </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <span class="text-gray-900 dark:text-white">
+                            {{ parseDate(image.updated_at) }}
+                          </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                          <div class="flex gap-4">
+                            <button type="button" class="inline-flex items-center p-1 border border-transparent rounded-full text-gray-700 bg-transparent hover:bg-gray-50 focus:outline-none focus:ring-primary-500/25 focus:ring-2">
+                              <svg class="h-5 w-5 outline-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                   <div v-else class="flex flex-col justify-center items-center py-8 space-y-4 h-64 text-center">
                     <svg class="flex-shrink-0 w-10 h-10 text-gray-400 sm:w-16 sm:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" />
@@ -113,18 +247,27 @@
 <script>
 
 import * as _ from 'lodash'
+import * as dayjs from 'dayjs'
+import { niceBytes } from '~/helpers/formatBytes'
+import 'dayjs/locale/es'
 
 export default {
   name: 'Media',
   data () {
     return {
+      baseUrl: this.$config.baseImageUrl,
       isModalUploadOpen: false,
       isLoaded: false,
       alreadyHasData: 0,
       isFetching: false,
       searchImage: '',
       images: {},
-      isSearchOrSelect: false
+      isSearchOrSelect: false,
+      selectedImage: {},
+      selectedImageName: '',
+      isModalDetailsFileOpen: false,
+      isUpdating: false,
+      selected: []
     }
   },
   fetchOnServer: false,
@@ -132,8 +275,17 @@ export default {
     await this.fetchMedia()
     this.isLoaded = true
   },
+  computed: {
+    indeterminate () {
+      return this.selected.length > 0 && this.selected.length < this.images.data.length
+    },
+    checked () {
+      return this.indeterminate || this.selected.length === this.images.data.length
+    }
+  },
   watch: {
     'images.meta.current_page' () {
+      this.selected = []
       if (this.isLoaded) {
         this.fetchMedia()
       }
@@ -172,6 +324,22 @@ export default {
         this.isSearchOrSelect = false
       }
     },
+    async updateImage () {
+      this.isUpdating = true
+      try {
+        const { message } = await this.$axios.$put(`/images/${this.selectedImage.id}`, {
+          name: this.selectedImageName
+        })
+        await this.fetchMedia()
+        this.$notify({ group: 'top', type: 'success', title: '¡Proceso exitoso!', text: message }, 2500)
+        this.isModalDetailsFileOpen = false
+      } catch (e) {
+        const message = e.response.message
+        this.$notify({ group: 'top', type: 'error', title: '¡Error al validar!', text: message }, 2500)
+      } finally {
+        this.isUpdating = false
+      }
+    },
     debounceSearchImages: _.debounce(function () {
       this.isSearchOrSelect = true
       this.fetchMedia()
@@ -180,6 +348,28 @@ export default {
       if (payload) {
         await this.fetchMedia()
       }
+    },
+    openDetailsModal (image) {
+      this.selectedImageName = _.get(image, ['name'], 'Default')
+      this.selectedImage = image
+      this.isModalDetailsFileOpen = true
+    },
+    closeDetailsModal () {
+      this.isModalDetailsFileOpen = false
+    },
+    returnThumbnail (image) {
+      const thumbnail = _.get(image, ['path'], null)
+      return thumbnail ? `${this.baseUrl}/${thumbnail}` : null
+    },
+    returnSize (image) {
+      const size = _.get(image, ['size'], 0)
+      return niceBytes(size)
+    },
+    parseDate (date) {
+      return dayjs(date).locale('es').format('DD MMMM YYYY')
+    },
+    selectAll (event) {
+      this.selected = event.target.checked ? this.images.data.map(i => i.id) : []
     }
   }
 }

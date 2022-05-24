@@ -1,5 +1,5 @@
 <template>
-  <li class="flex relative flex-col rounded-md border overflow-hidden border-gray-300 dark:border-gray-700">
+  <li class="flex relative flex-col rounded-md border border-gray-300 dark:border-gray-700">
     <div class="relative flex flex-col">
       <div v-if="isUploading" class="absolute rounded-t-md inset-0 z-10 bg-gray-800/90 dark:bg-gray-700/95 transition-opacity flex items-center justify-center" aria-hidden="true">
         <UploadProgressBar :percentage="uploadPercentage" />

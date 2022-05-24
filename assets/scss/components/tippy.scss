@@ -1,9 +1,9 @@
 .tippy-tooltip.light-theme {
-  @apply text-sm text-left text-gray-700 bg-white border dark:text-white border-gray-200 dark:bg-gray-900 dark:border-gray-900/75;
+  @apply text-sm text-left z-10 text-gray-700 bg-white border dark:text-white border-gray-200 dark:bg-gray-900 dark:border-gray-900/75;
 }
 
 .tippy-tooltip.dark-theme {
-  @apply text-sm text-left text-white border dark:bg-gray-900 bg-black border-black dark:border-gray-900/75;
+  @apply text-sm text-left z-10 text-white border dark:bg-gray-900 bg-black border-black dark:border-gray-900/75;
 }
 
 //light-theme

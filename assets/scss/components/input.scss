@@ -23,7 +23,7 @@
 }
 
 .base-label {
-  @apply block text-sm text-gray-700;
+  @apply block text-gray-700 dark:text-gray-300;
 }
 
 .custom-select {

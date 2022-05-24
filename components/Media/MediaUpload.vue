@@ -71,10 +71,10 @@
         </div>
       </template>
     </BaseModal>
-    <BaseModal :is-open="isModalDetailsFileOpen" :title="`Detalles de ${fileEdited.name}`" size="md" :close-button="false">
+    <BaseModal :is-open="isModalDetailsFileOpen" :title="`Detalles de ${fileEdited.name}`" size="sm" :close-button="false">
       <template #modal-body>
         <div class="px-6 pb-6">
-          <div class="grid grid-cols-1 gap-6 xs:grid-cols-2">
+          <div class="flex flex-col space-y-6">
             <EditThumbnail :media-file="selectedFileToEdit" />
             <div class="flex flex-col space-y-6">
               <div class="w-full">
@@ -83,30 +83,12 @@
                   <input id="file_name" v-model.trim="fileEdited.name" type="text" name="file_name" class="h-9 base-input">
                 </div>
               </div>
-              <div class="w-full">
-                <div class="flex items-center space-x-1">
-                  <label for="file_alter" class="base-label">Texto alternativo</label>
-                  <button
-                    v-tippy="{appendTo: 'parent', maxWidth:200, animateFill: false, theme: 'dark', placement : 'bottom', delay: 0, animation : 'fade'}"
-                    content="Este texto se mostrará si la imagen no se puede mostrar."
-                    class="relative focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50" type="button"
-                    tabindex="-1"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                    </svg>
-                  </button>
-                </div>
-                <div class="relative mt-1">
-                  <input id="file_alter" v-model.trim="fileEdited.alt" type="text" name="file_alter" class="h-9 base-input">
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </template>
       <template #modal-footer>
-        <div class="flex justify-center items-center px-6 py-4 space-x-3 bg-gray-100 rounded-b-lg xs:justify-end">
+        <div class="flex justify-center dark:border-gray-700 dark:bg-transparent items-center px-6 py-4 space-x-3 bg-gray-50 border-t border-gray-300 rounded-b-lg xs:justify-end">
           <BaseButton variant="white" class="w-24" size="sm" @onClick="closeDetailsModal()">
             Cancelar
           </BaseButton>

@@ -1,7 +1,15 @@
 <template>
-  <li class="flex relative flex-col rounded-md border overflow-hidden border-gray-300 dark:border-gray-700">
+  <li class="flex relative flex-col rounded-md border border-gray-300 dark:border-gray-700">
     <div class="relative flex flex-col">
-      <div class="top-1 ml-auto p-1">
+      <div class="flex justify-between items-center p-1">
+        <input
+          v-model="localValue"
+          aria-describedby="media_item-description"
+          class="cursor-pointer base-checkbox"
+          name="media_item"
+          type="checkbox"
+          :value="image.id"
+        >
         <button
           v-tippy="{appendTo: 'parent', maxWidth:200, animateFill: false, theme: 'dark', placement : 'bottom', delay: [400,0], animation : 'fade'}"
           content="Editar"
@@ -36,9 +44,11 @@
 
 <script>
 import * as _ from 'lodash'
+import vModelMixin from '~/mixins/vModelMixin'
 
 export default {
   name: 'MediaItemThumbnail',
+  mixins: [vModelMixin],
   props: {
     image: {
       type: Object,
@@ -55,7 +65,7 @@ export default {
   },
   computed: {
     getThumbnail () {
-      const thumbnail = _.get(this.image, ['image_path'], null)
+      const thumbnail = _.get(this.image, ['path'], null)
       return thumbnail ? `${this.baseUrl}/${thumbnail}` : null
     },
     getFileName () {
