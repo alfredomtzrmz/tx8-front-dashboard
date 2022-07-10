@@ -1,65 +1,31 @@
 <template>
   <div>
-    <MediaUpload :is-modal-upload-open.sync="isModalUploadOpen" @closeModalUpload="isModalUploadOpen = false" @uploadFinished="fetchAgain" />
-    <BaseModal :is-open="isModalDetailsFileOpen" :title="`Detalles de ${selectedImageName}`" size="sm" :close-button="false">
-      <template #modal-body>
-        <div class="px-6 pb-6">
-          <div class="flex flex-col space-y-6">
-            <div class="flex relative flex-col rounded-md border border-gray-300 dark:border-gray-700">
-              <div class="flex flex-col flex-shrink-0 justify-center items-center p-1 w-auto h-56 text-center">
-                <div class="flex justify-center items-center w-full h-full">
-                  <LoadedImage v-if="returnThumbnail(selectedImage)" :alt="selectedImageName" :src="returnThumbnail(selectedImage)" classes="object-cover object-center h-full" />
-                </div>
-              </div>
-            </div>
-            <div class="flex flex-col space-y-6">
-              <div class="w-full">
-                <label for="file_name" class="base-label">Nombre</label>
-                <div class="relative mt-1">
-                  <input id="file_name" v-model.trim="selectedImageName" type="text" name="file_name" class="h-9 base-input">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #modal-footer>
-        <div class="flex justify-center items-center px-6 py-4 space-x-3 bg-gray-50 rounded-b-lg border-t border-gray-300 dark:border-gray-700 dark:bg-transparent xs:justify-end">
-          <BaseButton
-            variant="white"
-            class="w-24"
-            size="sm"
-            :disabled="isUpdating"
-            @onClick="closeDetailsModal()"
-          >
-            Cancelar
-          </BaseButton>
-          <BaseButton
-            class="w-24"
-            size="sm"
-            :disabled="isUpdating"
-            :is-loading="isUpdating"
-            @onClick="updateImage()"
-          >
-            Actualizar
-          </BaseButton>
-        </div>
-      </template>
-    </BaseModal>
+    <UploadMedia @uploadFinished="fetchAgain" />
+    <EditMedia
+      :media-file="selectedImage"
+      @successEditMedia="fetchAgain"
+    />
+    <DeleteMedia
+      :media-file="selectedImage"
+      @successDeleteMedia="fetchAgain"
+    />
     <div class="space-y-5 w-full">
       <div v-if="isLoaded" class="flex flex-col space-y-6 w-full">
         <div class="flex flex-col justify-between items-start space-y-2 sm:space-y-0 sm:flex-row">
           <h1 class="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl dark:text-gray-100">
             Librería de medios
           </h1>
-          <BaseButton v-if="images.data && images.data.length > 0" @onClick="isModalUploadOpen = true">
+          <BaseButton
+            v-if="images.data && images.data.length > 0"
+            @onClick="openUploadModal()"
+          >
             Agregar imágenes
           </BaseButton>
         </div>
         <template v-if="isLoaded">
           <template v-if="alreadyHasData">
             <div class="flex-col bg-white rounded-lg border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700">
-              <!--            Filtros-->
+              <!-- Filters -->
               <div class="flex justify-between items-center p-2 h-14">
                 <div class="flex items-center gap-2">
                   <div class="ml-3">
@@ -110,7 +76,7 @@
                   <!--              Filtros-->
                 </div>
               </div>
-              <!--            Tabla-->
+              <!-- Table-->
               <div class="flex flex-col w-full">
                 <div class="block overflow-x-auto relative w-full border-t border-b border-gray-200 dark:border-gray-700">
                   <BaseSpinnerTable v-if="isFetching && images.data.length > 0" />
@@ -145,7 +111,13 @@
                             </span>
                           </div>
                         </th>
-                        <th class="px-4 py-3 dark:bg-gray-800" />
+                        <th class="px-4 py-3 dark:bg-gray-800">
+                          <div class="flex items-center text-sm font-medium text-gray-600 whitespace-nowrap dark:text-gray-300">
+                            <span>
+                              Acciones
+                            </span>
+                          </div>
+                        </th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
@@ -182,9 +154,22 @@
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap">
                           <div class="flex gap-4">
-                            <button type="button" class="inline-flex items-center p-1 border border-transparent rounded-full text-gray-700 bg-transparent hover:bg-gray-50 focus:outline-none focus:ring-primary-500/25 focus:ring-2">
+                            <button
+                              type="button"
+                              class="inline-flex items-center p-1 border border-transparent rounded-full text-gray-700 bg-transparent hover:bg-gray-50 focus:outline-none focus:ring-primary-500/25 focus:ring-2"
+                              @click="openDeleteModal(image)"
+                            >
                               <svg class="h-5 w-5 outline-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                            <button
+                              type="button"
+                              class="inline-flex items-center p-1 border border-transparent rounded-full text-gray-700 bg-transparent hover:bg-gray-50 focus:outline-none focus:ring-primary-500/25 focus:ring-2"
+                              @click="openEditModal(image)"
+                            >
+                              <svg class="h-5 w-5 outline-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                               </svg>
                             </button>
                           </div>
@@ -206,6 +191,7 @@
                     </div>
                   </div>
                 </div>
+                <!-- Paginator-->
                 <BasePaginator
                   v-if="images.data.length > 0"
                   v-model="images.meta.current_page"
@@ -230,7 +216,7 @@
                   Aquí es donde gestionas las imágenes para tus productos.
                 </p>
                 <div class="mt-2 mb-6">
-                  <BaseButton @onClick="isModalUploadOpen = true">
+                  <BaseButton @onClick="openUploadModal()">
                     Agregar imágenes
                   </BaseButton>
                 </div>
@@ -245,7 +231,7 @@
 </template>
 
 <script>
-
+import { mapActions } from 'vuex'
 import * as _ from 'lodash'
 import * as dayjs from 'dayjs'
 import { niceBytes } from '~/helpers/formatBytes'
@@ -257,6 +243,7 @@ export default {
     return {
       baseUrl: this.$config.baseImageUrl,
       isModalUploadOpen: false,
+      isModalEditOpen: false,
       isLoaded: false,
       alreadyHasData: 0,
       isFetching: false,
@@ -265,7 +252,6 @@ export default {
       isSearchOrSelect: false,
       selectedImage: {},
       selectedImageName: '',
-      isModalDetailsFileOpen: false,
       isUpdating: false,
       selected: []
     }
@@ -300,6 +286,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('modal', ['setOpenModal', 'setCloseModal']),
     async fetchMedia () {
       try {
         this.isFetching = true
@@ -313,31 +300,9 @@ export default {
         this.alreadyHasData = this.alreadyHasData !== 0 ? this.alreadyHasData : this.images.data.length
         this.isFetching = false
       } catch (e) {
-        this.$notify(
-          {
-            group: 'top',
-            type: 'error',
-            title: '¡Error!',
-            text: 'Ocurrió un error al obtener los medios'
-          }, 2000)
+        this.$notify({ group: 'top', type: 'error', title: '¡Error!', text: 'Ocurrió un error al obtener los medios' }, 2000)
       } finally {
         this.isSearchOrSelect = false
-      }
-    },
-    async updateImage () {
-      this.isUpdating = true
-      try {
-        const { message } = await this.$axios.$put(`/images/${this.selectedImage.id}`, {
-          name: this.selectedImageName
-        })
-        await this.fetchMedia()
-        this.$notify({ group: 'top', type: 'success', title: '¡Proceso exitoso!', text: message }, 2500)
-        this.isModalDetailsFileOpen = false
-      } catch (e) {
-        const message = e.response.message
-        this.$notify({ group: 'top', type: 'error', title: '¡Error al validar!', text: message }, 2500)
-      } finally {
-        this.isUpdating = false
       }
     },
     debounceSearchImages: _.debounce(function () {
@@ -347,15 +312,16 @@ export default {
     async fetchAgain (payload) {
       if (payload) {
         await this.fetchMedia()
+        this.alreadyHasData = this.images.data.length
       }
     },
     openDetailsModal (image) {
       this.selectedImageName = _.get(image, ['name'], 'Default')
       this.selectedImage = image
-      this.isModalDetailsFileOpen = true
+      this.setOpenModal('details-item-upload-modal')
     },
     closeDetailsModal () {
-      this.isModalDetailsFileOpen = false
+      this.setCloseModal('details-item-upload-modal')
     },
     returnThumbnail (image) {
       const thumbnail = _.get(image, ['path'], null)
@@ -370,6 +336,17 @@ export default {
     },
     selectAll (event) {
       this.selected = event.target.checked ? this.images.data.map(i => i.id) : []
+    },
+    openUploadModal () {
+      this.setOpenModal('upload-media-modal')
+    },
+    openEditModal (mediaFile) {
+      this.selectedImage = mediaFile
+      this.setOpenModal('edit-media-modal')
+    },
+    openDeleteModal (mediaFile) {
+      this.selectedImage = mediaFile
+      this.setOpenModal('delete-media-modal')
     }
   }
 }

@@ -21,6 +21,7 @@ export default {
   },
   data () {
     return {
+      baseUrl: this.$config.baseImageUrl,
       fileThumbnail: ''
     }
   },
@@ -34,13 +35,18 @@ export default {
   },
   methods: {
     setThumbnailFile () {
-      const reader = new FileReader()
-      const vm = this
-      reader.onload = function (e) {
-        vm.fileThumbnail = e.target.result
+      const file = _.get(this.mediaFile, ['file'], null)
+      if (file) {
+        const reader = new FileReader()
+        const vm = this
+        reader.onload = function (e) {
+          vm.fileThumbnail = e.target.result
+        }
+        reader.readAsDataURL(file)
+      } else {
+        const thumbnail = _.get(this.mediaFile, ['path'], null)
+        this.fileThumbnail = thumbnail ? `${this.baseUrl}/${thumbnail}` : ''
       }
-      const file = _.get(this.mediaFile, ['file'], '')
-      reader.readAsDataURL(file)
     }
   }
 }

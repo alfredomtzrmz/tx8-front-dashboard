@@ -1,6 +1,11 @@
 <template>
   <div>
-    <BaseModal :is-open="VerifiedAccountModalIsOpen" title="Verificar identificación del cliente" size="md" @close="closeVerifiedAccountModal">
+    <BaseModal
+      id="verify-account-modal"
+      title="Verificar identificación del cliente"
+      size="md"
+      @close="closeVerifiedAccountModal"
+    >
       <template #modal-body>
         <div class="flex flex-col px-4 space-y-6">
           <div class="w-full h-full border-4 border-gray-200 border-dashed rounded-lg">
@@ -55,12 +60,12 @@
           </div>
         </div>
         <div class="flex items-center justify-end p-4 mt-6 space-x-3 text-right border-t rounded-b-lg sm:px-6">
-          <base-button type="button" variant="white" class="w-32" @onClick="closeVerifiedAccountModal()">
+          <BaseButton type="button" variant="white" :disabled="isLoading" class="w-32" @onClick="closeVerifiedAccountModal()">
             Cancelar
-          </base-button>
-          <base-button type="button" class="w-32" @onClick="verifyAccount()">
+          </BaseButton>
+          <BaseButton :is-loading="isLoading" :disabled="isLoading" type="button" class="w-32" @onClick="verifyAccount()">
             Guardar
-          </base-button>
+          </BaseButton>
         </div>
       </template>
     </BaseModal>
@@ -70,7 +75,12 @@
           <h2 class="text-base font-semibold text-gray-900">
             Cuenta verificada
           </h2>
-          <button v-if="returnIdentification" class="inline-flex items-center p-1 text-sm font-medium text-blue-600 bg-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-gray-50" type="button" @click="VerifiedAccountModalIsOpen=true">
+          <button
+            v-if="returnIdentification"
+            class="inline-flex items-center p-1 text-sm font-medium text-blue-600 bg-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-gray-50"
+            type="button"
+            @click="openVerifiedAccountModal"
+          >
             Verificar
           </button>
         </div>
@@ -82,6 +92,7 @@
 
 <script>
 import * as _ from 'lodash'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'WidgetVerifyAccount',
@@ -94,8 +105,8 @@ export default {
   data () {
     return {
       customerData: this.customer,
-      VerifiedAccountModalIsOpen: false,
       verifiedAccount: 1,
+      isLoading: false,
       isLoaded: false,
       baseUrl: this.$config.baseImageUrl
     }
@@ -114,8 +125,12 @@ export default {
 
   },
   methods: {
+    ...mapActions('modal', ['setCloseModal', 'setOpenModal']),
     closeVerifiedAccountModal () {
-      this.VerifiedAccountModalIsOpen = false
+      this.setCloseModal('verify-account-modal')
+    },
+    openVerifiedAccountModal () {
+      this.setOpenModal('verify-account-modal')
     },
     async verifyAccount () {
       this.isLoading = true
@@ -125,11 +140,11 @@ export default {
         })
         this.customerData = data
         this.$notify({ group: 'top', type: 'success', title: '¡Proceso exitoso!', text: message }, 2500)
-        this.VerifiedAccountModalIsOpen = false
       } catch (e) {
         const message = e.response.message
         this.$notify({ group: 'top', type: 'error', title: '¡Error al validar!', text: message }, 2500)
       } finally {
+        this.closeVerifiedAccountModal()
         this.isLoading = false
       }
     }

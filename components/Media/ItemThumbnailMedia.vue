@@ -47,7 +47,7 @@ import * as _ from 'lodash'
 import vModelMixin from '~/mixins/vModelMixin'
 
 export default {
-  name: 'MediaItemThumbnail',
+  name: 'ItemThumbnailMedia',
   mixins: [vModelMixin],
   props: {
     image: {

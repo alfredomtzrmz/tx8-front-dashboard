@@ -1,6 +1,6 @@
 <template>
   <transition leave-active-class="duration-100">
-    <div v-show="isOpen" :class="modalResponsiveClass" class="fixed inset-x-0 bottom-0 z-50 p-4">
+    <div v-show="toggleModal" :class="modalResponsiveClass" class="fixed inset-x-0 bottom-0 z-50 p-4">
       <transition
         enter-active-class="duration-100 ease-out"
         enter-class="opacity-0"
@@ -9,22 +9,32 @@
         leave-class="opacity-100"
         leave-to-class="opacity-0"
       >
-        <div v-show="isOpen" class="fixed inset-0 transition-opacity">
-          <div class="absolute inset-0 bg-gray-600/60 dark:bg-black/50" />
+        <div
+          v-if="toggleModal"
+          ref="overlayModal"
+          tabindex="-1"
+          class="fixed inset-0 transition-opacity focus:outline-0 focus:ring-0 backdrop-blur-xs transition"
+          :class="{ 'cursor-pointer': !keepStatic }"
+          @click="!keepStatic ? close() : () => null"
+          @keydown.esc="!keepStatic ? close() : () => null"
+        >
+          <div class="absolute inset-0 bg-gray-600/60 dark:bg-black/50 " />
         </div>
       </transition>
       <transition
         enter-active-class="duration-200 ease-out"
-        enter-class="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+        enter-class="translate-y-4 opacity-0 xs:translate-y-0 xs:scale-95"
         enter-to-class="translate-y-0 opacity-100 sm:scale-100"
         leave-active-class="duration-100 ease-in"
-        leave-class="translate-y-0 opacity-100 sm:scale-100"
-        leave-to-class="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+        leave-class="translate-y-0 opacity-100 xs:scale-100"
+        leave-to-class="translate-y-4 opacity-0 xs:translate-y-0 xs:scale-95"
       >
         <div
-          v-if="isOpen"
+          v-if="toggleModal"
+          :id="id"
+          ref="modal"
           :class="modalSizeClass"
-          class="flex flex-col transition-all transform bg-white dark:bg-gray-800 rounded-lg max-h-[95vh] min-h-56 shadow-full sm:w-full"
+          class="flex flex-col transition-all transform bg-white dark:bg-gray-800 rounded-lg max-h-[95vh] min-h-56 w-full"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-headline"
@@ -57,20 +67,21 @@
   </transition>
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 const AVAILABLE_SIZES = ['sm', 'md', 'lg', 'xl']
+
 export default {
-  /* eslint-disable vue/require-default-prop */
   name: 'BaseModal',
   props: {
+    id: {
+      type: String,
+      default: 'modal'
+    },
     closeButton: {
       type: Boolean,
       default: true,
       required: false
-    },
-    isOpen: {
-      type: Boolean,
-      default: false,
-      required: true
     },
     size: {
       type: String,
@@ -82,38 +93,86 @@ export default {
     },
     title: {
       type: String,
-      required: false
+      default: ''
     },
-    manipulateData: {
-      type: Object,
-      default () {
-        return {}
-      },
-      required: false
+    keepStatic: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
+    ...mapGetters('modal', ['getModals']),
+    numberOfModals () {
+      return this.getModals.length
+    },
+    indexCurrentModal () {
+      return this.getModals.findIndex((modalId) => {
+        return modalId === this.id
+      })
+    },
+    toggleModal () {
+      if (this.numberOfModals > 0) {
+        if (this.getModals[this.indexCurrentModal]) {
+          return this.getModals[this.indexCurrentModal]
+        }
+      }
+      return false
+    },
     modalSizeClass () {
       return this.size === 'sm' ? 'sm:max-w-md' : this.size === 'lg' ? 'md:max-w-3xl' : this.size === 'xl' ? 'md:max-w-6xl' : 'md:max-w-xl'
     },
     modalResponsiveClass () {
-      return this.size === 'sm' ? 'sm:inset-0 sm:flex sm:items-center sm:justify-center' : 'md:inset-0 md:flex md:items-center md:justify-center'
+      return this.size === 'sm' ? 'xs:inset-0 xs:flex xs:items-center xs:justify-center' : 'inset-0 flex items-center justify-center'
     }
   },
+
   watch: {
-    isOpen: {
-      immediate: true,
-      handler (isOpen) {
-        if (process.client) {
-          if (isOpen) {
-            document.body.classList.add('overflow-y-hidden')
-          } else {
-            setTimeout(() => {
-              document.body.classList.remove('overflow-y-hidden')
-            }, 200)
-          }
-        }
+    toggleModal (newValue, oldValue) {
+      if (oldValue && !newValue) {
+        this.$emit('closed')
       }
+      if (!oldValue && newValue) {
+        this.$emit('opened')
+      }
+
+      if (newValue) {
+        if (!this.keepStatic) {
+          setTimeout(() => {
+            this.$refs.overlayModal?.focus()
+          }, 200)
+        }
+
+        if (this.numberOfModals <= 1) {
+          const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+          document.body.style.paddingRight = `${scrollbarWidth || 0}px`
+          document.body.style.overflow = 'hidden'
+        }
+      } else if (this.numberOfModals < 1) {
+        setTimeout(() => {
+          document.body.removeAttribute('style')
+        }, 300)
+      }
+    }
+  },
+  created () {
+    this.unsubscribe = this.$store.subscribe((mutation) => {
+      if (mutation.type === 'modal/BEFORE_CLOSE' && mutation.payload === this.id) {
+        this.$emit('beforeClose')
+      } else if (mutation.type === 'modal/BEFORE_OPEN' && mutation.payload === this.id) {
+        this.$emit('beforeOpen')
+      }
+    })
+  },
+  unmounted () {
+    setTimeout(() => {
+      document.body.removeAttribute('style')
+    }, 200)
+    this.unsubscribe()
+  },
+  methods: {
+    ...mapActions('modal', ['setCloseModal']),
+    close () {
+      this.setCloseModal(this.id)
     }
   }
 }

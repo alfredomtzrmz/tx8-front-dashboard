@@ -33,6 +33,9 @@ module.exports = {
       },
       animation: {
         'spin-faster': 'spin .5s linear infinite'
+      },
+      backdropBlur: {
+        xs: '2px'
       }
     },
     fontFamily: {

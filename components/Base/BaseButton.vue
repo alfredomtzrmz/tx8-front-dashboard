@@ -27,7 +27,7 @@
 </template>
 
 <script>
-const AVAILABLE_VARIANTS = ['primary', 'white', 'transparent', 'full-transparent', 'text']
+const AVAILABLE_VARIANTS = ['primary', 'white', 'transparent', 'full-transparent', 'text', 'red']
 const AVAILABLE_SIZES = ['sm', 'md', 'icon', 'mini']
 export default {
   name: 'BaseButton',

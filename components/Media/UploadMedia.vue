@@ -1,6 +1,11 @@
 <template>
   <div>
-    <BaseModal :is-open="mutableIsModalUploadOpen" title="Agregar elementos multimedia" size="lg" :close-button="false">
+    <BaseModal
+      id="upload-media-modal"
+      title="Agregar elementos multimedia"
+      size="lg"
+      :close-button="false"
+    >
       <template #modal-body>
         <div class="px-6 pb-6">
           <div
@@ -24,7 +29,7 @@
             </span>
             <div v-if="getValidImagesArrayLength >= 1" class="overflow-y-auto">
               <ul role="list" class="grid gap-4 md:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2">
-                <MediaUploadThumbnail
+                <UploadItemMedia
                   v-for="(fileImage, index) in validImagesArray"
                   :key="fileImage.id"
                   :media-file="fileImage"
@@ -62,7 +67,13 @@
       </template>
       <template #modal-footer>
         <div class="flex justify-center dark:border-gray-700 dark:bg-transparent items-center px-6 py-4 space-x-3 bg-gray-50 border-t border-gray-300 rounded-b-lg xs:justify-end">
-          <BaseButton variant="white" class="w-24" size="sm" :disabled="isUploading" @onClick="closeModalUpload()">
+          <BaseButton
+            variant="white"
+            class="w-24"
+            size="sm"
+            :disabled="isUploading"
+            @onClick="closeUploadModal()"
+          >
             Cancelar
           </BaseButton>
           <BaseButton class="w-24" size="sm" :disabled="!getValidImagesArrayLength>=1 || isUploading" :is-loading="isUploading" @onClick="saveImages()">
@@ -71,7 +82,12 @@
         </div>
       </template>
     </BaseModal>
-    <BaseModal :is-open="isModalDetailsFileOpen" :title="`Detalles de ${fileEdited.name}`" size="sm" :close-button="false">
+    <BaseModal
+      id="edit-upload-media-modal"
+      :title="`Detalles de ${fileEdited.name}`"
+      size="sm"
+      :close-button="false"
+    >
       <template #modal-body>
         <div class="px-6 pb-6">
           <div class="flex flex-col space-y-6">
@@ -89,7 +105,7 @@
       </template>
       <template #modal-footer>
         <div class="flex justify-center dark:border-gray-700 dark:bg-transparent items-center px-6 py-4 space-x-3 bg-gray-50 border-t border-gray-300 rounded-b-lg xs:justify-end">
-          <BaseButton variant="white" class="w-24" size="sm" @onClick="closeDetailsModal()">
+          <BaseButton variant="white" class="w-24" size="sm" @onClick="closeEditUploadMedia()">
             Cancelar
           </BaseButton>
           <BaseButton class="w-24" size="sm" @onClick="replaceEditedFile()">
@@ -104,21 +120,14 @@
 <script>
 import * as _ from 'lodash'
 import { uuid } from 'vue-uuid'
+import { mapActions } from 'vuex'
 
 const VALIDATE_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
 export default {
-  name: 'MediaUpload',
-  props: {
-    isModalUploadOpen: {
-      type: Boolean,
-      default: false,
-      required: true
-    }
-  },
+  name: 'UploadMedia',
   data () {
     return {
-      isModalDetailsFileOpen: false,
       validImagesArray: [],
       validImagesArrayLength: 0,
       noValidFilesArray: [],
@@ -135,14 +144,6 @@ export default {
     }
   },
   computed: {
-    mutableIsModalUploadOpen: {
-      get () {
-        return this.isModalUploadOpen
-      },
-      set (value) {
-        this.$emit('update:isModalUploadOpen', value)
-      }
-    },
     getValidImagesArrayLength () {
       return _.size(this.validImagesArray)
     }
@@ -158,7 +159,7 @@ export default {
 
       if (indexesOfSavedImagesLength >= 1) {
         if (_.size(newValue) === this.validImagesArrayLength) {
-          this.mutableIsModalUploadOpen = false
+          this.closeUploadModal()
           this.$emit('uploadFinished', true)
         }
       }
@@ -172,6 +173,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('modal', ['setOpenModal', 'setCloseModal']),
     dragOverEvent (event) {
       if (!this.isUploading) {
         this.draggingFile = true
@@ -227,8 +229,8 @@ export default {
       const nameWithExtension = _.get(file, ['name'], 'defaultImage').toLowerCase()
       return nameWithExtension.split('.').slice(0, -1).join('.')
     },
-    closeModalUpload () {
-      this.$emit('closeModalUpload')
+    closeUploadModal () {
+      this.setCloseModal('upload-media-modal')
       this.validImagesArray = []
       this.noValidImagesArray = []
       this.noValidFilesArray = []
@@ -236,10 +238,7 @@ export default {
     openDetailsModal (fileObject) {
       this.fileEdited.name = _.get(fileObject, ['name'], 'Default').toLowerCase()
       this.selectedFileToEdit = fileObject
-      this.isModalDetailsFileOpen = true
-    },
-    closeDetailsModal () {
-      this.isModalDetailsFileOpen = false
+      this.setOpenModal('edit-upload-media-modal')
     },
     removeFileItem (index) {
       this.validImagesArray.splice(index, 1)
@@ -251,14 +250,7 @@ export default {
 
       this.fileEdited.name = ''
       this.fileEdited.alt = ''
-      this.isModalDetailsFileOpen = false
-    },
-    storeThumbnail (fileObject) {
-      const formData = new FormData()
-      formData.append('name', fileObject.name)
-      formData.append('alt', fileObject.alt)
-      formData.append('image', fileObject.file)
-      return formData
+      this.closeEditUploadMedia()
     },
     saveImages () {
       this.triggerUploadFile = true
@@ -267,6 +259,9 @@ export default {
     setSavedImages (index) {
       this.validImagesArray.splice(index, 1)
       this.indexesOfSavedImages.push(index)
+    },
+    closeEditUploadMedia () {
+      this.setCloseModal('edit-upload-media-modal')
     }
   }
 }
